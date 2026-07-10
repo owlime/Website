@@ -10,45 +10,160 @@ export function getStaticPaths() {
 }
 
 const { project } = Astro.props;
+
+/*
+ * 每个项目只显示前三张：
+ * 封面图 + Gallery 里的前两张。
+ */
+const images = [
+  project.cover,
+  ...(project.gallery || [])
+]
+  .filter(Boolean)
+  .slice(0, 3);
 ---
-<BaseLayout title={project.title} description={project.description} bodyClass="project-page">
-  <article class="project-detail">
-    <header class="project-heading">
-      <p>{project.category} / {project.year}</p>
-      <h1>{project.title}</h1>
-      <p>{project.client}</p>
+
+<BaseLayout
+  title={project.title}
+  showChrome={false}
+  bodyClass="minimal-project-page"
+>
+  <main class="minimal-project">
+
+    <header class="minimal-project-header">
+      <a href="/works/">{project.title}</a>
+      <span>{project.year}</span>
     </header>
 
-    <div class="project-gallery">
-      {[project.cover, ...(project.gallery || [])].map((image, index) => (
-        <figure class:list={[index > 0 && index % 3 === 0 && 'gallery-inset']}>
-          <img src={image} alt={`${project.title}, image ${index + 1}`} loading={index < 2 ? 'eager' : 'lazy'} />
-          <figcaption>{String(index + 1).padStart(2, '0')}</figcaption>
-        </figure>
-      ))}
+    <div class="minimal-project-gallery">
+      {
+        images.map((image, index) => (
+          <figure>
+            <img
+              src={image}
+              alt={`${project.title} — image ${index + 1}`}
+              loading={index === 0 ? 'eager' : 'lazy'}
+            />
+          </figure>
+        ))
+      }
     </div>
 
-    <section class="project-information">
-      <div class="project-description">
-        <h2>Project</h2>
-        <p>{project.description}</p>
-      </div>
-      <div class="project-credits">
-        <h2>Credits</h2>
-        <dl>
-          {project.credits?.map((credit) => (
-            <div>
-              <dt>{credit.role}</dt>
-              <dd>{credit.name}</dd>
-            </div>
-          ))}
-        </dl>
-      </div>
-    </section>
+    {
+      project.credits?.length > 0 && (
+        <footer class="minimal-project-credits">
+          {
+            project.credits.map((credit) => (
+              <div class="credit-row">
+                <span>{credit.role}</span>
+                <span>{credit.name}</span>
+              </div>
+            ))
+          }
+        </footer>
+      )
+    }
 
-    <nav class="project-end" aria-label="Project navigation">
-      <a href="/works/">Works</a><span aria-hidden="true">,</span>
-      <a href="/information/">Information.</a>
-    </nav>
-  </article>
+  </main>
 </BaseLayout>
+
+<style>
+  :global(html),
+  :global(body) {
+    margin: 0;
+    background: #ffffff;
+    color: #111111;
+  }
+
+  :global(body.minimal-project-page) {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.25;
+  }
+
+  .minimal-project {
+    min-height: 100svh;
+    padding: 10px 10px 36px;
+  }
+
+  /* 左上角只显示作品名和年份 */
+  .minimal-project-header {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+
+  .minimal-project-header a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .minimal-project-header a:hover {
+    opacity: 0.5;
+  }
+
+  /* 三张图片纵向排列，居中且不过大 */
+  .minimal-project-gallery {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(54px, 8vw, 110px);
+    padding: clamp(70px, 10vh, 130px) 0;
+  }
+
+  .minimal-project-gallery figure {
+    width: min(42vw, 620px);
+    margin: 0;
+  }
+
+  .minimal-project-gallery img {
+    display: block;
+    width: 100%;
+    max-height: 78svh;
+    object-fit: contain;
+  }
+
+  /* 页面底部右侧只显示 Credits */
+  .minimal-project-credits {
+    width: min(420px, 42vw);
+    margin-left: auto;
+    padding-top: 24px;
+  }
+
+  .credit-row {
+    display: grid;
+    grid-template-columns: minmax(120px, 1fr) minmax(140px, 1.2fr);
+    gap: 20px;
+    padding: 2px 0;
+  }
+
+  @media (max-width: 700px) {
+    .minimal-project {
+      padding: 10px 10px 28px;
+    }
+
+    .minimal-project-gallery {
+      gap: 54px;
+      padding: 70px 0;
+    }
+
+    .minimal-project-gallery figure {
+      width: min(86vw, 560px);
+    }
+
+    .minimal-project-gallery img {
+      max-height: 76svh;
+    }
+
+    .minimal-project-credits {
+      width: 100%;
+      padding-top: 10px;
+    }
+
+    .credit-row {
+      grid-template-columns: 1fr 1.25fr;
+      gap: 14px;
+    }
+  }
+</style>

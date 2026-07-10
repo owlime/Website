@@ -1,10 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getProjects } from '../lib/content.js';
 import site from '../data/site.json';
 
-const projects = getProjects();
-const heroImage = projects[0]?.cover;
 const year = new Date().getFullYear();
 ---
 
@@ -26,24 +23,21 @@ const year = new Date().getFullYear();
       <a href="/information/">Information.</a>
     </nav>
 
-    {
-      heroImage ? (
-        <a
-          class="shenqu-image"
-          href="/works/"
-          aria-label="Open works gallery"
-        >
-          <img
-            src={heroImage}
-            alt="SHEN QU portfolio"
-          />
-        </a>
-      ) : (
-        <a class="shenqu-image-empty" href="/works/">
-          Open works
-        </a>
-      )
-    }
+    <a
+      class="shenqu-video"
+      href="/works/"
+      aria-label="Open works gallery"
+    >
+      <video
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="metadata"
+      >
+        <source src="/uploads/home-video.mp4" type="video/mp4" />
+      </video>
+    </a>
 
     <div class="shenqu-copyright">
       © {year}
@@ -71,6 +65,7 @@ const year = new Date().getFullYear();
     color: #111111;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 13px;
+    font-weight: 400;
     line-height: 1.25;
   }
 
@@ -113,7 +108,7 @@ const year = new Date().getFullYear();
     opacity: 0.5;
   }
 
-  .shenqu-image {
+  .shenqu-video {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -123,27 +118,20 @@ const year = new Date().getFullYear();
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
   }
 
-  .shenqu-image img {
+  .shenqu-video video {
     display: block;
     width: 100%;
     height: 100%;
     object-fit: contain;
   }
 
-  .shenqu-image-empty {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: inherit;
-  }
-
   .shenqu-copyright {
     position: absolute;
-    bottom: 10px;
     left: 10px;
+    bottom: 10px;
     z-index: 10;
     font-size: 10px;
   }
@@ -157,7 +145,7 @@ const year = new Date().getFullYear();
       margin-top: 14px;
     }
 
-    .shenqu-image {
+    .shenqu-video {
       width: calc(100vw - 36px);
       height: 62svh;
     }

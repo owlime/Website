@@ -2,9 +2,10 @@
 import site from '../data/site.json';
 import '../styles/global.css';
 
+const defaultDescription = `${site.headline} ${site.location}`;
 const {
   title = site.name,
-  description = site.intro,
+  description = defaultDescription,
   bodyClass = '',
   showChrome = true
 } = Astro.props;

@@ -2,27 +2,99 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import site from '../data/site.json';
 ---
-<BaseLayout title="Information" showChrome={false} bodyClass="information-page">
-  <section class="information-screen">
-    <div class="information-identity">
-      <a href="/">{site.name}</a>
-      <p>{site.headline}</p>
-    </div>
 
-    <nav class="information-navigation" aria-label="Main navigation">
-      <a href="/works/">Works</a><span aria-hidden="true">,</span>
-      <a href="/information/" aria-current="page">Information.</a>
-    </nav>
+<BaseLayout bodyClass="information-page">
+  <section class="information">
 
-    <div class="information-contact" aria-label="Contact information">
+    <h1 class="information-headline">
+      {site.headline}
+    </h1>
+
+    <div class="information-contact">
       <p>{site.location}</p>
-      <p><a href={site.instagram} target="_blank" rel="noreferrer">{site.instagramLabel || 'Instagram'} ↗</a></p>
-      <p><a href={`mailto:${site.email}`}>{site.email}</a></p>
+
+      <a href={`mailto:${site.email}`}>
+        {site.email}
+      </a>
+
+      <a
+        href={site.instagram}
+        target="_blank"
+        rel="noreferrer"
+      >
+        @owlime
+      </a>
     </div>
 
-    <div class="information-meta">
-      <span>© {new Date().getFullYear()}</span>
-      <span>{site.location}</span>
-    </div>
   </section>
 </BaseLayout>
+
+<style>
+  :global(body.information-page) {
+    background: #ffffff;
+  }
+
+  .information {
+    position: relative;
+    min-height: calc(100svh - 80px);
+    padding: 70px 10px 40px;
+    color: #111111;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 300;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .information-headline {
+    position: absolute;
+    top: 70px;
+    left: 10px;
+    max-width: 300px;
+    margin: 0;
+    font: inherit;
+  }
+
+  .information-contact {
+    position: absolute;
+    top: 70px;
+    right: 22%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .information-contact p {
+    margin: 0 0 18px;
+  }
+
+  .information-contact a {
+    display: block;
+    margin: 0 0 4px;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .information-contact a:hover {
+    opacity: 0.45;
+  }
+
+  @media (max-width: 700px) {
+    .information {
+      min-height: calc(100svh - 60px);
+      padding-top: 90px;
+      font-size: 12px;
+    }
+
+    .information-headline {
+      position: static;
+      max-width: none;
+    }
+
+    .information-contact {
+      position: static;
+      margin-top: 70px;
+    }
+  }
+</style>

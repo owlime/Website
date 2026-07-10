@@ -5,14 +5,26 @@ import site from '../data/site.json';
 
 const projects = getProjects();
 const year = new Date().getFullYear();
+
+/*
+  分别为电脑和手机建立独立瀑布流列。
+  项目顺序仍然按照 CMS 中的 order 排列。
+*/
+const desktopColumns = [[], [], []];
+const mobileColumns = [[], []];
+
+projects.forEach((project, index) => {
+  desktopColumns[index % 3].push(project);
+  mobileColumns[index % 2].push(project);
+});
 ---
 
 <BaseLayout
   title="Works"
   showChrome={false}
-  bodyClass="works-page"
+  bodyClass="sq-works-page"
 >
-  <main class="sq-works">
+  <main class="sq-works-layout">
 
     <aside class="sq-works-sidebar">
       <a class="sq-works-name" href="/">
@@ -29,28 +41,72 @@ const year = new Date().getFullYear();
       </div>
     </aside>
 
-    <section class="sq-works-grid" aria-label="Projects">
+    <!-- 电脑版：三列瀑布流 -->
+    <section
+      class="sq-masonry sq-masonry-desktop"
+      aria-label="Projects"
+    >
       {
-        projects.map((project) => (
-          <article class="sq-work-item">
-            <a
-              class="sq-work-link"
-              href={`/projects/${project.slug}/`}
-            >
-              <div class="sq-work-image">
-                <img
-                  src={project.cover}
-                  alt={project.title}
-                  loading="lazy"
-                />
-              </div>
+        desktopColumns.map((column) => (
+          <div class="sq-masonry-column">
+            {
+              column.map((project) => (
+                <article class="sq-work-item">
+                  <a
+                    class="sq-work-link"
+                    href={`/projects/${project.slug}/`}
+                  >
+                    <img
+                      class="sq-work-cover"
+                      src={project.cover}
+                      alt={project.title}
+                      loading="lazy"
+                    />
 
-              <p class="sq-work-caption">
-                {project.title}
-                {project.year ? `, ${project.year}` : ''}
-              </p>
-            </a>
-          </article>
+                    <p class="sq-work-caption">
+                      {project.title}
+                      {project.year ? `, ${project.year}` : ''}
+                    </p>
+                  </a>
+                </article>
+              ))
+            }
+          </div>
+        ))
+      }
+    </section>
+
+    <!-- 手机版：两列瀑布流 -->
+    <section
+      class="sq-masonry sq-masonry-mobile"
+      aria-label="Projects"
+    >
+      {
+        mobileColumns.map((column) => (
+          <div class="sq-masonry-column">
+            {
+              column.map((project) => (
+                <article class="sq-work-item">
+                  <a
+                    class="sq-work-link"
+                    href={`/projects/${project.slug}/`}
+                  >
+                    <img
+                      class="sq-work-cover"
+                      src={project.cover}
+                      alt={project.title}
+                      loading="lazy"
+                    />
+
+                    <p class="sq-work-caption">
+                      {project.title}
+                      {project.year ? `, ${project.year}` : ''}
+                    </p>
+                  </a>
+                </article>
+              ))
+            }
+          </div>
         ))
       }
     </section>
@@ -67,17 +123,32 @@ const year = new Date().getFullYear();
     color: #111111;
   }
 
-  :global(body.works-page) {
+  :global(body.sq-works-page) {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 12px;
     font-weight: 400;
     line-height: 1.25;
   }
 
-  .sq-works {
+  /*
+    BaseLayout 目前仍然包含 Skip to content。
+    在 Works 页面将其隐藏，避免左上角再次出现。
+  */
+  :global(body.sq-works-page .skip-link) {
+    position: fixed;
+    top: -1000px;
+    left: -1000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .sq-works-layout {
     min-height: 100svh;
     background: #ffffff;
   }
+
+  /* ---------- DESKTOP SIDEBAR ---------- */
 
   .sq-works-sidebar {
     position: fixed;
@@ -112,38 +183,46 @@ const year = new Date().getFullYear();
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    margin-bottom: 28px;
+    margin: 0 0 28px;
   }
 
   .sq-works-sidebar-bottom p {
     margin: 0;
   }
 
-  .sq-works-grid {
-    margin-left: 180px;
-    padding: 24px 38px 120px;
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    column-gap: clamp(38px, 4.5vw, 76px);
-    row-gap: clamp(110px, 14vw, 210px);
+  /* ---------- MASONRY ---------- */
+
+  .sq-masonry {
     box-sizing: border-box;
+  }
+
+  .sq-masonry-desktop {
+    margin-left: 180px;
+    padding: 34px 54px 130px 38px;
+    display: flex;
+    align-items: flex-start;
+    gap: clamp(40px, 4.5vw, 76px);
+  }
+
+  .sq-masonry-mobile {
+    display: none;
+  }
+
+  .sq-masonry-column {
+    flex: 1 1 0;
+    min-width: 0;
   }
 
   .sq-work-item {
     width: 100%;
-    max-width: 380px;
-    justify-self: center;
+    margin: 0 0 clamp(80px, 9vw, 135px);
   }
 
   .sq-work-link {
     display: block;
   }
 
-  .sq-work-image {
-    width: 100%;
-  }
-
-  .sq-work-image img {
+  .sq-work-cover {
     display: block;
     width: 100%;
     height: auto;
@@ -155,20 +234,22 @@ const year = new Date().getFullYear();
     text-align: left;
   }
 
-  @media (max-width: 900px) and (min-width: 701px) {
-    .sq-works-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
+  /* ---------- MOBILE ---------- */
 
   @media (max-width: 700px) {
     .sq-works-sidebar {
       position: relative;
       width: 100%;
-      height: 92px;
-      min-height: 92px;
+      height: 86px;
+      min-height: 86px;
       padding: 12px;
       display: block;
+    }
+
+    .sq-works-name {
+      position: absolute;
+      top: 12px;
+      left: 12px;
     }
 
     .sq-works-sidebar-bottom {
@@ -179,6 +260,7 @@ const year = new Date().getFullYear();
       display: flex;
       align-items: baseline;
       gap: 10px;
+      margin: 0;
     }
 
     .sq-works-sidebar-bottom nav {
@@ -194,31 +276,32 @@ const year = new Date().getFullYear();
       white-space: nowrap;
     }
 
-    .sq-works-grid {
-      margin-left: 0;
-      padding: 12px 20px 80px;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      column-gap: 28px;
-      row-gap: 72px;
+    .sq-masonry-desktop {
+      display: none;
+    }
+
+    .sq-masonry-mobile {
+      width: 100%;
+      margin: 0;
+      padding: 14px 20px 80px;
+      display: flex;
+      align-items: flex-start;
+      gap: 22px;
+    }
+
+    .sq-masonry-column {
+      width: calc(50% - 11px);
+      flex: 0 0 calc(50% - 11px);
     }
 
     .sq-work-item {
-      width: 100%;
-      min-width: 0;
-      max-width: none;
+      margin-bottom: 56px;
     }
 
-    .sq-work-image {
+    .sq-work-cover {
       width: 100%;
-      aspect-ratio: 3 / 4;
-      overflow: hidden;
-      background: #f2f2f2;
-    }
-
-    .sq-work-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+      height: auto;
+      object-fit: contain;
     }
 
     .sq-work-caption {

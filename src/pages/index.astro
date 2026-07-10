@@ -103,12 +103,13 @@ const year = new Date().getFullYear();
     opacity: 0.5;
   }
 
+  /* Desktop: smaller and shifted to the right */
   .sq-home-video-link {
     position: absolute;
     top: 50%;
-    left: 50%;
-    width: min(52vw, 760px);
-    height: calc(100svh - 100px);
+    left: 61%;
+    width: min(36vw, 580px);
+    height: calc(100svh - 120px);
     transform: translate(-50%, -50%);
     display: flex;
     align-items: center;
@@ -135,6 +136,7 @@ const year = new Date().getFullYear();
     font-size: 10px;
   }
 
+  /* Mobile layout stays separate */
   @media (max-width: 700px) {
     .sq-home-name {
       top: 12px;

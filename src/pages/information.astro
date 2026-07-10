@@ -17,14 +17,16 @@ const year = new Date().getFullYear();
         {site.name}
       </a>
 
-      <div class="sq-info-sidebar-bottom">
+      <div class="sq-info-navigation-wrap">
         <nav class="sq-info-navigation" aria-label="Main navigation">
           <a href="/works/">Works.</a>
           <a href="/information/">Information.</a>
         </nav>
-
-        <p class="sq-info-copyright">© {year}</p>
       </div>
+
+      <p class="sq-info-copyright">
+        © {year}
+      </p>
     </aside>
 
     <section class="sq-info-content">
@@ -61,27 +63,32 @@ const year = new Date().getFullYear();
 </BaseLayout>
 
 <style>
-  :global(html) {
-    margin: 0;
-    padding: 0;
-    background: #ffffff;
-  }
-
-  :global(body.information-page) {
+  :global(html),
+  :global(body) {
     margin: 0;
     padding: 0;
     background: #ffffff;
     color: #111111;
+  }
+
+  :global(body.information-page) {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 12px;
     font-weight: 400;
     line-height: 1.25;
   }
 
+  :global(body.information-page .skip-link) {
+    position: fixed;
+    top: -1000px;
+    left: -1000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
   .sq-info-page {
-    position: relative;
     min-height: 100svh;
-    width: 100%;
     background: #ffffff;
   }
 
@@ -90,14 +97,10 @@ const year = new Date().getFullYear();
     top: 0;
     bottom: 0;
     left: 0;
-    z-index: 10;
     width: 180px;
     height: 100svh;
     padding: 10px;
     box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
     background: #ffffff;
   }
 
@@ -114,82 +117,117 @@ const year = new Date().getFullYear();
     opacity: 0.5;
   }
 
-  .sq-info-sidebar-bottom {
-    display: block;
+  .sq-info-navigation-wrap {
+    position: absolute;
+    bottom: 48px;
+    left: 10px;
   }
 
   .sq-info-navigation {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    margin: 0 0 28px;
-    padding: 0;
   }
 
   .sq-info-copyright {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
     margin: 0;
   }
 
   .sq-info-content {
-    display: block;
     width: 440px;
-    margin: 0 0 0 180px;
+    margin-left: 180px;
     padding: 34px 30px 80px;
     box-sizing: border-box;
   }
 
   .sq-info-headline {
-    display: block;
     margin: 0;
-    padding: 0;
   }
 
   .sq-info-details {
-    display: block;
-    width: 100%;
-    margin: 42px 0 0;
-    padding: 0;
+    margin-top: 42px;
   }
 
   .sq-info-location {
-    display: block;
     margin: 0;
-    padding: 0;
   }
 
   .sq-info-email {
     display: block;
     width: fit-content;
-    margin: 38px 0 0;
-    padding: 0;
+    margin-top: 38px;
   }
 
   .sq-info-instagram {
-    display: block;
     margin: 4px 0 0;
-    padding: 0;
   }
 
   @media (max-width: 700px) {
+    .sq-info-page {
+      position: relative;
+      min-height: 100svh;
+      padding-bottom: 54px;
+      box-sizing: border-box;
+    }
+
     .sq-info-sidebar {
       position: relative;
       width: 100%;
-      height: auto;
-      min-height: 118px;
+      height: 150px;
+      min-height: 150px;
+      padding: 12px;
     }
 
-    .sq-info-sidebar-bottom {
-      margin-top: 34px;
+    .sq-info-name {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+    }
+
+    .sq-info-navigation-wrap {
+      position: absolute;
+      top: 64px;
+      left: 12px;
+      bottom: auto;
     }
 
     .sq-info-navigation {
-      margin-bottom: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .sq-info-copyright {
+      position: fixed;
+      bottom: 12px;
+      left: 12px;
+      z-index: 40;
+      margin: 0;
+      padding-right: 6px;
+      background: rgba(255, 255, 255, 0.96);
     }
 
     .sq-info-content {
       width: 100%;
       margin-left: 0;
-      padding: 36px 18px 80px;
+      padding: 42px 38px 100px;
+      box-sizing: border-box;
+    }
+
+    .sq-info-headline,
+    .sq-info-details {
+      width: min(100%, 360px);
+    }
+
+    .sq-info-details {
+      margin-top: 44px;
+    }
+
+    .sq-info-email {
+      margin-top: 38px;
     }
   }
 </style>

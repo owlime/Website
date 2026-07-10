@@ -5,6 +5,7 @@ import site from '../data/site.json';
 
 const projects = getProjects();
 const firstCover = projects[0]?.cover;
+const homepageLines = [site.headline, site.location].filter(Boolean);
 ---
 <BaseLayout showChrome={false} bodyClass="landing-page">
   <section class="landing" aria-label="Portfolio entrance">
@@ -17,7 +18,9 @@ const firstCover = projects[0]?.cover;
       <a href="/information/">Information.</a>
     </nav>
     <span class="landing-year">© {new Date().getFullYear()}</span>
-    <span class="landing-role">{site.role}</span>
+    <span class="landing-statement" aria-label={homepageLines.join(' ')}>
+      {homepageLines.map((line) => <span>{line}</span>)}
+    </span>
   </section>
 
   <script>

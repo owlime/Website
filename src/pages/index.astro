@@ -33,9 +33,12 @@ const year = new Date().getFullYear();
         muted
         loop
         playsinline
-        preload="metadata"
+        preload="auto"
       >
-        <source src="/uploads/home-video.mp4" type="video/mp4" />
+        <source
+          src="/uploads/Home%20Video.mp4"
+          type="video/mp4"
+        />
       </video>
     </a>
 
@@ -76,7 +79,8 @@ const year = new Date().getFullYear();
     z-index: 10;
   }
 
-  .shenqu-identity a {
+  .shenqu-identity a,
+  .shenqu-navigation a {
     color: inherit;
     text-decoration: none;
   }
@@ -96,16 +100,6 @@ const year = new Date().getFullYear();
     z-index: 10;
     display: flex;
     gap: 4px;
-  }
-
-  .shenqu-navigation a {
-    color: inherit;
-    text-decoration: none;
-  }
-
-  .shenqu-identity a:hover,
-  .shenqu-navigation a:hover {
-    opacity: 0.5;
   }
 
   .shenqu-video {
@@ -130,8 +124,8 @@ const year = new Date().getFullYear();
 
   .shenqu-copyright {
     position: absolute;
-    left: 10px;
     bottom: 10px;
+    left: 10px;
     z-index: 10;
     font-size: 10px;
   }
@@ -148,12 +142,6 @@ const year = new Date().getFullYear();
     .shenqu-video {
       width: calc(100vw - 36px);
       height: 62svh;
-    }
-
-    .shenqu-navigation {
-      max-width: 48vw;
-      flex-wrap: wrap;
-      justify-content: flex-end;
     }
   }
 </style>

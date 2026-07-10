@@ -1,7 +1,6 @@
 ---
 import site from '../data/site.json';
 import '../styles/global.css';
-import '../styles/mobile.css';
 
 const defaultDescription = `${site.headline} ${site.location}`;
 
@@ -12,29 +11,32 @@ const {
   showChrome = true
 } = Astro.props;
 
-const pageTitle = title === site.name ? title : `${title} — ${site.name}`;
+const pageTitle =
+  title === site.name ? title : `${title} — ${site.name}`;
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1"
+    />
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
-    <meta name="theme-color" content="#f3f2ee" />
+    <meta name="theme-color" content="#ffffff" />
     <title>{pageTitle}</title>
   </head>
 
   <body class:list={[bodyClass, !showChrome && 'no-chrome']}>
-    <a class="skip-link" href="#main">Skip to content</a>
-
     {showChrome && (
       <header class="site-header">
         <a class="brand" href="/">{site.name}</a>
 
         <nav aria-label="Main navigation">
-          <a href="/works/">Works</a><span aria-hidden="true">,</span>
+          <a href="/works/">Works</a>
+          <span aria-hidden="true">,</span>
           <a href="/information/">Information.</a>
         </nav>
       </header>

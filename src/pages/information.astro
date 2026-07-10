@@ -2,18 +2,27 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import site from '../data/site.json';
 ---
-<BaseLayout title="Information" bodyClass="information-page">
-  <article class="information-grid">
-    <section class="information-intro">
-      <h1>{site.headline}</h1>
-    </section>
+<BaseLayout title="Information" showChrome={false} bodyClass="information-page">
+  <section class="information-screen">
+    <div class="information-identity">
+      <a href="/">{site.name}</a>
+      <p>{site.headline}</p>
+    </div>
 
-    <section class="information-contact" aria-label="Contact information">
+    <nav class="information-navigation" aria-label="Main navigation">
+      <a href="/works/">Works</a><span aria-hidden="true">,</span>
+      <a href="/information/" aria-current="page">Information.</a>
+    </nav>
+
+    <div class="information-contact" aria-label="Contact information">
       <p>{site.location}</p>
       <p><a href={site.instagram} target="_blank" rel="noreferrer">{site.instagramLabel || 'Instagram'} ↗</a></p>
       <p><a href={`mailto:${site.email}`}>{site.email}</a></p>
-    </section>
+    </div>
 
-    {site.copyright && <p class="information-note">{site.copyright}</p>}
-  </article>
+    <div class="information-meta">
+      <span>© {new Date().getFullYear()}</span>
+      <span>{site.location}</span>
+    </div>
+  </section>
 </BaseLayout>

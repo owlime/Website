@@ -1,26 +1,31 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getProjects } from '../lib/content.js';
+import site from '../data/site.json';
 
 const projects = getProjects();
 ---
-<BaseLayout title="Works" bodyClass="works-page">
-  <h1 class="visually-hidden">Selected works</h1>
-  <ol class="works-stream">
-    {projects.map((project, index) => (
-      <li class="work-row">
-        <a class="work-card" href={`/projects/${project.slug}/`}>
-          <figure>
-            <img src={project.cover} alt={`${project.title} — ${project.category}, ${project.year}`} loading={index === 0 ? 'eager' : 'lazy'} />
-          </figure>
-          <div class="work-card-meta">
-            <span>{String(index + 1).padStart(2, '0')}</span>
-            <h2>{project.title}</h2>
-            <span>{project.category}</span>
-            <span>{project.year}</span>
-          </div>
+<BaseLayout title="Works" showChrome={false} bodyClass="works-page">
+  <div class="works-shell">
+    <aside class="works-sidebar">
+      <a class="works-name" href="/">{site.name}</a>
+
+      <div class="works-sidebar-bottom">
+        <nav aria-label="Main navigation">
+          <a href="/works/" aria-current="page">Works,</a>
+          <a href="/information/">Information.</a>
+        </nav>
+        <p>© {new Date().getFullYear()}</p>
+      </div>
+    </aside>
+
+    <main class="works-gallery" aria-label="Selected works">
+      <h1 class="visually-hidden">Selected works</h1>
+      {projects.map((project, index) => (
+        <a class="work-tile" href={`/projects/${project.slug}/`} aria-label={`Open ${project.title}`}>
+          <img src={project.cover} alt={project.title} loading={index < 6 ? 'eager' : 'lazy'} />
         </a>
-      </li>
-    ))}
-  </ol>
+      ))}
+    </main>
+  </div>
 </BaseLayout>

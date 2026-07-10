@@ -7,27 +7,28 @@ const projects = getProjects();
 const heroImage = projects[0]?.cover;
 ---
 <BaseLayout showChrome={false} bodyClass="landing-page">
-  <section class="single-image-home" aria-label="Portfolio entrance">
-    <header class="home-chrome">
-      <a class="home-name" href="/">{site.name}</a>
-      <nav class="home-nav" aria-label="Main navigation">
-        <a href="/works/">Works</a><span aria-hidden="true">,</span>
-        <a href="/information/">Information.</a>
-      </nav>
-    </header>
+  <section class="home-screen" aria-label="Portfolio entrance">
+    <div class="home-identity">
+      <a href="/">{site.name}</a>
+      <p>{site.headline}</p>
+    </div>
+
+    <nav class="home-navigation" aria-label="Main navigation">
+      <a href="/works/">Works</a><span aria-hidden="true">,</span>
+      <a href="/information/">Information.</a>
+    </nav>
 
     {heroImage ? (
-      <a class="home-image-link" href="/works/" aria-label="Enter portfolio gallery">
+      <a class="home-hero" href="/works/" aria-label="Enter the portfolio gallery">
         <img src={heroImage} alt="Enter the SHEN QU portfolio gallery" />
       </a>
     ) : (
-      <a class="home-image-link home-image-placeholder" href="/works/">Enter gallery</a>
+      <a class="home-hero home-hero-empty" href="/works/">Enter gallery</a>
     )}
 
-    <div class="home-footer">
-      <p>{site.headline}</p>
-      <p>{site.location}</p>
-      <p>© {new Date().getFullYear()}</p>
+    <div class="home-meta" aria-label="Location and copyright">
+      <span>© {new Date().getFullYear()}</span>
+      <span>{site.location}</span>
     </div>
   </section>
 </BaseLayout>

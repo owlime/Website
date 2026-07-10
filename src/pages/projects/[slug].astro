@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getProjects } from '../../lib/content.js';
+import site from '../../data/site.json';
 
 export function getStaticPaths() {
   return getProjects().map((project) => ({
@@ -10,60 +11,72 @@ export function getStaticPaths() {
 }
 
 const { project } = Astro.props;
+const year = new Date().getFullYear();
 
 /*
- * 每个项目只显示前三张：
- * 封面图 + Gallery 里的前两张。
+ * cover 只用于 /works/ 封面墙。
+ * 项目详情页只读取 gallery；gallery 为空时才退回 cover。
  */
-const images = [
-  project.cover,
-  ...(project.gallery || [])
-]
-  .filter(Boolean)
-  .slice(0, 3);
+const images =
+  project.gallery?.length > 0
+    ? project.gallery
+    : project.cover
+      ? [project.cover]
+      : [];
 ---
 
 <BaseLayout
   title={project.title}
   showChrome={false}
-  bodyClass="minimal-project-page"
+  bodyClass="project-gallery-page"
 >
-  <main class="minimal-project">
+  <main class="project-layout">
+    <aside class="project-sidebar">
+      <a class="project-site-name" href="/">{site.name}</a>
 
-    <header class="minimal-project-header">
-      <a href="/works/">{project.title}</a>
-      <span>{project.year}</span>
-    </header>
+      <p class="project-title">
+        {project.title}{project.year ? `, ${project.year}` : ''}
+      </p>
 
-    <div class="minimal-project-gallery">
+      <div class="project-sidebar-bottom">
+        <nav aria-label="Main navigation">
+          <a href="/works/">Works.</a>
+          <a href="/information/">Information.</a>
+        </nav>
+        <p>© {year}</p>
+      </div>
+    </aside>
+
+    <section class="project-content">
+      <div class="project-images">
+        {
+          images.map((image, index) => (
+            <figure>
+              <img
+                src={image}
+                alt={`${project.title} — image ${index + 1}`}
+                loading={index === 0 ? 'eager' : 'lazy'}
+              />
+            </figure>
+          ))
+        }
+      </div>
+
       {
-        images.map((image, index) => (
-          <figure>
-            <img
-              src={image}
-              alt={`${project.title} — image ${index + 1}`}
-              loading={index === 0 ? 'eager' : 'lazy'}
-            />
-          </figure>
-        ))
+        project.credits?.length > 0 && (
+          <footer class="project-credits">
+            {
+              project.credits.map((credit) => (
+                <div class="credit-row">
+                  <span>{credit.role}</span>
+                  <span>{credit.name}</span>
+                </div>
+              ))
+            }
+          </footer>
+        )
       }
-    </div>
-
-    {
-      project.credits?.length > 0 && (
-        <footer class="minimal-project-credits">
-          {
-            project.credits.map((credit) => (
-              <div class="credit-row">
-                <span>{credit.role}</span>
-                <span>{credit.name}</span>
-              </div>
-            ))
-          }
-        </footer>
-      )
-    }
-
+    </section>
   </main>
 </BaseLayout>
 
@@ -75,94 +88,148 @@ const images = [
     color: #111111;
   }
 
-  :global(body.minimal-project-page) {
+  :global(body.project-gallery-page) {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 12px;
     font-weight: 400;
     line-height: 1.25;
   }
 
-  .minimal-project {
+  .project-layout {
     min-height: 100svh;
-    padding: 10px 10px 36px;
+    background: #ffffff;
   }
 
-  /* 左上角只显示作品名和年份 */
-  .minimal-project-header {
-    display: flex;
-    align-items: baseline;
-    gap: 10px;
+  .project-sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 20;
+    width: 190px;
+    height: 100svh;
+    padding: 10px;
+    box-sizing: border-box;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    background: #ffffff;
   }
 
-  .minimal-project-header a {
+  .project-site-name,
+  .project-sidebar a {
     color: inherit;
     text-decoration: none;
   }
 
-  .minimal-project-header a:hover {
-    opacity: 0.5;
+  .project-site-name:hover,
+  .project-sidebar a:hover {
+    opacity: 0.52;
   }
 
-  /* 三张图片纵向排列，居中且不过大 */
-  .minimal-project-gallery {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: clamp(54px, 8vw, 110px);
-    padding: clamp(70px, 10vh, 130px) 0;
-  }
-
-  .minimal-project-gallery figure {
-    width: min(42vw, 620px);
+  .project-title {
+    align-self: center;
+    max-width: 160px;
     margin: 0;
   }
 
-  .minimal-project-gallery img {
-    display: block;
+  .project-sidebar-bottom nav {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 28px;
+  }
+
+  .project-sidebar-bottom p {
+    margin: 0;
+  }
+
+  .project-content {
+    margin-left: 190px;
+    padding: 0 48px 54px;
+  }
+
+  .project-images {
+    width: min(72vw, 980px);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(56px, 7vw, 100px);
+  }
+
+  .project-images figure {
     width: 100%;
-    max-height: 78svh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+  }
+
+  .project-images img {
+    display: block;
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    max-height: 92svh;
     object-fit: contain;
   }
 
-  /* 页面底部右侧只显示 Credits */
-  .minimal-project-credits {
-    width: min(420px, 42vw);
-    margin-left: auto;
-    padding-top: 24px;
+  .project-credits {
+    width: min(430px, 42vw);
+    margin: 72px 0 0 auto;
+    padding-bottom: 18px;
   }
 
   .credit-row {
     display: grid;
-    grid-template-columns: minmax(120px, 1fr) minmax(140px, 1.2fr);
-    gap: 20px;
+    grid-template-columns: minmax(120px, 1fr) minmax(150px, 1.2fr);
+    gap: 22px;
     padding: 2px 0;
   }
 
   @media (max-width: 700px) {
-    .minimal-project {
-      padding: 10px 10px 28px;
-    }
-
-    .minimal-project-gallery {
-      gap: 54px;
-      padding: 70px 0;
-    }
-
-    .minimal-project-gallery figure {
-      width: min(86vw, 560px);
-    }
-
-    .minimal-project-gallery img {
-      max-height: 76svh;
-    }
-
-    .minimal-project-credits {
+    .project-sidebar {
+      position: relative;
       width: 100%;
-      padding-top: 10px;
+      height: auto;
+      min-height: 154px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .project-title {
+      order: 2;
+      align-self: auto;
+      max-width: none;
+      margin-top: 34px;
+    }
+
+    .project-sidebar-bottom {
+      order: 3;
+      margin-top: 30px;
+    }
+
+    .project-sidebar-bottom nav {
+      margin-bottom: 12px;
+    }
+
+    .project-content {
+      margin-left: 0;
+      padding: 10px 14px 40px;
+    }
+
+    .project-images {
+      width: 100%;
+      gap: 46px;
+    }
+
+    .project-images img {
+      max-height: none;
+    }
+
+    .project-credits {
+      width: 100%;
+      margin-top: 54px;
     }
 
     .credit-row {
-      grid-template-columns: 1fr 1.25fr;
+      grid-template-columns: 1fr 1.2fr;
       gap: 14px;
     }
   }

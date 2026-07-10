@@ -12,8 +12,7 @@ const year = new Date().getFullYear();
       <a class="home-name" href="/">{site.name}</a>
 
       <nav class="home-nav" aria-label="Main navigation">
-        <a href="/works/">Works</a>
-        <span>,</span>
+        <a href="/works/">Works.</a>
         <a href="/information/">Information.</a>
       </nav>
     </div>
@@ -82,9 +81,15 @@ const year = new Date().getFullYear();
   }
 
   .home-nav {
+    position: fixed;
+    top: 48%;
+    left: 10px;
+    transform: translateY(-50%);
     display: flex;
-    gap: 3px;
-    margin-top: 18px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    margin: 0;
   }
 
   .home-name:hover,
@@ -127,7 +132,8 @@ const year = new Date().getFullYear();
     }
 
     .home-nav {
-      margin-top: 14px;
+      top: 46%;
+      margin: 0;
     }
 
     .home-video {

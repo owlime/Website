@@ -1,0 +1,20 @@
+{
+  "title": "Field Notes",
+  "slug": "field-notes",
+  "year": "2025",
+  "category": "Personal",
+  "client": "Research Series",
+  "order": 3,
+  "published": true,
+  "cover": "/uploads/project-03-cover.svg",
+  "description": "An ongoing visual research project collecting gestures, materials and accidental compositions.",
+  "credits": [
+    { "role": "Concept & Styling", "name": "Your Name" },
+    { "role": "Photography", "name": "Collaborator Name" }
+  ],
+  "gallery": [
+    "/uploads/project-03-01.svg",
+    "/uploads/project-03-02.svg",
+    "/uploads/project-03-03.svg"
+  ]
+}

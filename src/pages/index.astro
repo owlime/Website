@@ -1,0 +1,33 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getProjects } from '../lib/content.js';
+import site from '../data/site.json';
+
+const projects = getProjects();
+const firstCover = projects[0]?.cover;
+---
+<BaseLayout showChrome={false} bodyClass="landing-page">
+  <section class="landing" aria-label="Portfolio entrance">
+    {firstCover && <img class="landing-preview" id="landing-preview" src={firstCover} alt="" aria-hidden="true" />}
+    <div class="landing-shade" aria-hidden="true"></div>
+
+    <a class="landing-name" href="/">{site.name}</a>
+    <nav class="landing-nav" aria-label="Main navigation">
+      <a href="/works/" data-preview>Works</a><span aria-hidden="true">,</span>
+      <a href="/information/">Information.</a>
+    </nav>
+    <span class="landing-year">© {new Date().getFullYear()}</span>
+    <span class="landing-role">{site.role}</span>
+  </section>
+
+  <script>
+    const preview = document.querySelector('#landing-preview');
+    const previewLink = document.querySelector('[data-preview]');
+    if (preview && previewLink) {
+      previewLink.addEventListener('mouseenter', () => preview.classList.add('is-visible'));
+      previewLink.addEventListener('mouseleave', () => preview.classList.remove('is-visible'));
+      previewLink.addEventListener('focus', () => preview.classList.add('is-visible'));
+      previewLink.addEventListener('blur', () => preview.classList.remove('is-visible'));
+    }
+  </script>
+</BaseLayout>

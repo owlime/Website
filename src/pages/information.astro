@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import site from '../data/site.json';
+---
+<BaseLayout title="Information" bodyClass="information-page">
+  <article class="information-grid">
+    <section class="information-intro">
+      <h1>{site.intro}</h1>
+      <p>{site.about}</p>
+    </section>
+
+    <section class="information-block information-practice">
+      <h2>Practice</h2>
+      <ul>
+        {site.services.map((service) => <li>{service}</li>)}
+      </ul>
+    </section>
+
+    <section class="information-block information-clients">
+      <h2>Selected clients / publications</h2>
+      <ul>
+        {site.clients?.map((client) => <li>{client}</li>)}
+      </ul>
+    </section>
+
+    <section class="information-block information-contact">
+      <h2>For enquiries</h2>
+      <p><a href={`mailto:${site.email}`}>{site.email}</a></p>
+      <h2>Instagram</h2>
+      <p><a href={site.instagram} target="_blank" rel="noreferrer">{site.instagramLabel || 'Instagram'} ↗</a></p>
+      <p class="information-location">{site.location}</p>
+    </section>
+
+    <p class="information-note">{site.copyright}</p>
+  </article>
+</BaseLayout>

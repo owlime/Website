@@ -1,0 +1,21 @@
+{
+  "title": "Soft Structures",
+  "slug": "soft-structures",
+  "year": "2026",
+  "category": "Editorial",
+  "client": "Independent",
+  "order": 1,
+  "published": true,
+  "cover": "/uploads/project-01-cover.svg",
+  "description": "An editorial study of volume, restraint and constructed silhouettes.",
+  "credits": [
+    { "role": "Art Direction & Styling", "name": "Your Name" },
+    { "role": "Photography", "name": "Collaborator Name" },
+    { "role": "Hair & Makeup", "name": "Collaborator Name" }
+  ],
+  "gallery": [
+    "/uploads/project-01-01.svg",
+    "/uploads/project-01-02.svg",
+    "/uploads/project-01-03.svg"
+  ]
+}

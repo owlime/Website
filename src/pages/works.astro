@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getProjects } from '../lib/content.js';
+
+const projects = getProjects();
+---
+<BaseLayout title="Works" bodyClass="works-page">
+  <h1 class="visually-hidden">Selected works</h1>
+  <ol class="works-stream">
+    {projects.map((project, index) => (
+      <li class="work-row">
+        <a class="work-card" href={`/projects/${project.slug}/`}>
+          <figure>
+            <img src={project.cover} alt={`${project.title} — ${project.category}, ${project.year}`} loading={index === 0 ? 'eager' : 'lazy'} />
+          </figure>
+          <div class="work-card-meta">
+            <span>{String(index + 1).padStart(2, '0')}</span>
+            <h2>{project.title}</h2>
+            <span>{project.category}</span>
+            <span>{project.year}</span>
+          </div>
+        </a>
+      </li>
+    ))}
+  </ol>
+</BaseLayout>

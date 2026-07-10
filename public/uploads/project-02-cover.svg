@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1500" viewBox="0 0 1200 1500">
+  <rect width="1200" height="1500" fill="#9da2a2"/>
+  <path d="M0 1125 L480 375 L1200 1000" fill="none" stroke="#181a1a" stroke-width="2" opacity="0.45"/>
+  <circle cx="900" cy="500" r="150" fill="none" stroke="#181a1a" stroke-width="2" opacity="0.3"/>
+  <text x="40" y="1425" fill="#181a1a" font-family="Arial, Helvetica, sans-serif" font-size="24" letter-spacing="2">AFTER IMAGE</text>
+  <text x="40" y="1460" fill="#181a1a" opacity="0.65" font-family="Arial, Helvetica, sans-serif" font-size="13" letter-spacing="1">COVER PLACEHOLDER</text>
+</svg>

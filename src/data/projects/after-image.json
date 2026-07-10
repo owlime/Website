@@ -1,0 +1,21 @@
+{
+  "title": "After Image",
+  "slug": "after-image",
+  "year": "2025",
+  "category": "Campaign",
+  "client": "Studio Project",
+  "order": 2,
+  "published": true,
+  "cover": "/uploads/project-02-cover.svg",
+  "description": "A campaign concept built around repetition, reflection and visual memory.",
+  "credits": [
+    { "role": "Art Direction", "name": "Your Name" },
+    { "role": "Styling", "name": "Your Name" },
+    { "role": "Photography", "name": "Collaborator Name" }
+  ],
+  "gallery": [
+    "/uploads/project-02-01.svg",
+    "/uploads/project-02-02.svg",
+    "/uploads/project-02-03.svg"
+  ]
+}

@@ -10,35 +10,41 @@ const year = new Date().getFullYear();
   showChrome={false}
   bodyClass="information-page"
 >
-  <main class="information-layout">
-    <aside class="information-sidebar">
-      <a class="information-site-name" href="/">
+  <main class="sq-info-page">
+
+    <aside class="sq-info-sidebar">
+      <a class="sq-info-name" href="/">
         {site.name}
       </a>
 
-      <div class="information-sidebar-bottom">
-        <nav aria-label="Main navigation">
+      <div class="sq-info-sidebar-bottom">
+        <nav class="sq-info-navigation" aria-label="Main navigation">
           <a href="/works/">Works.</a>
           <a href="/information/">Information.</a>
         </nav>
 
-        <p>© {year}</p>
+        <p class="sq-info-copyright">© {year}</p>
       </div>
     </aside>
 
-    <section class="information-content">
-      <p class="information-headline">
+    <section class="sq-info-content">
+      <p class="sq-info-headline">
         {site.headline}
       </p>
 
-      <div class="information-contact">
-        <p>{site.location}</p>
+      <div class="sq-info-details">
+        <p class="sq-info-location">
+          {site.location}
+        </p>
 
-        <a href={`mailto:${site.email}`}>
+        <a
+          class="sq-info-email"
+          href={`mailto:${site.email}`}
+        >
           {site.email}
         </a>
 
-        <p class="instagram-line">
+        <p class="sq-info-instagram">
           Instagram:
           <a
             href={site.instagram}
@@ -50,34 +56,41 @@ const year = new Date().getFullYear();
         </p>
       </div>
     </section>
+
   </main>
 </BaseLayout>
 
 <style>
-  :global(html),
-  :global(body) {
+  :global(html) {
     margin: 0;
+    padding: 0;
     background: #ffffff;
-    color: #111111;
   }
 
   :global(body.information-page) {
+    margin: 0;
+    padding: 0;
+    background: #ffffff;
+    color: #111111;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 12px;
     font-weight: 400;
     line-height: 1.25;
   }
 
-  .information-layout {
+  .sq-info-page {
+    position: relative;
     min-height: 100svh;
+    width: 100%;
     background: #ffffff;
   }
 
-  .information-sidebar {
+  .sq-info-sidebar {
     position: fixed;
     top: 0;
     bottom: 0;
     left: 0;
+    z-index: 10;
     width: 180px;
     height: 100svh;
     padding: 10px;
@@ -88,78 +101,95 @@ const year = new Date().getFullYear();
     background: #ffffff;
   }
 
-  .information-site-name,
-  .information-sidebar a,
-  .information-contact a {
-    color: inherit;
+  .sq-info-name,
+  .sq-info-navigation a,
+  .sq-info-details a {
+    color: #111111;
     text-decoration: none;
   }
 
-  .information-site-name:hover,
-  .information-sidebar a:hover,
-  .information-contact a:hover {
+  .sq-info-name:hover,
+  .sq-info-navigation a:hover,
+  .sq-info-details a:hover {
     opacity: 0.5;
   }
 
-  .information-sidebar-bottom nav {
+  .sq-info-sidebar-bottom {
+    display: block;
+  }
+
+  .sq-info-navigation {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    margin-bottom: 28px;
+    margin: 0 0 28px;
+    padding: 0;
   }
 
-  .information-sidebar-bottom p {
+  .sq-info-copyright {
     margin: 0;
   }
 
-  .information-content {
-    margin-left: 180px;
-    padding: 34px 30px 80px;
+  .sq-info-content {
+    display: block;
     width: 440px;
+    margin: 0 0 0 180px;
+    padding: 34px 30px 80px;
     box-sizing: border-box;
   }
 
-  .information-headline {
-    margin: 0;
-  }
-
-  .information-contact {
-    margin-top: 42px;
-  }
-
-  .information-contact p {
-    margin: 0;
-  }
-
-  .information-contact > a {
+  .sq-info-headline {
     display: block;
-    margin-top: 38px;
+    margin: 0;
+    padding: 0;
   }
 
-  .instagram-line {
-    margin-top: 4px !important;
+  .sq-info-details {
+    display: block;
+    width: 100%;
+    margin: 42px 0 0;
+    padding: 0;
+  }
+
+  .sq-info-location {
+    display: block;
+    margin: 0;
+    padding: 0;
+  }
+
+  .sq-info-email {
+    display: block;
+    width: fit-content;
+    margin: 38px 0 0;
+    padding: 0;
+  }
+
+  .sq-info-instagram {
+    display: block;
+    margin: 4px 0 0;
+    padding: 0;
   }
 
   @media (max-width: 700px) {
-    .information-sidebar {
+    .sq-info-sidebar {
       position: relative;
       width: 100%;
       height: auto;
       min-height: 118px;
     }
 
-    .information-sidebar-bottom {
+    .sq-info-sidebar-bottom {
       margin-top: 34px;
     }
 
-    .information-sidebar-bottom nav {
+    .sq-info-navigation {
       margin-bottom: 12px;
     }
 
-    .information-content {
+    .sq-info-content {
+      width: 100%;
       margin-left: 0;
       padding: 36px 18px 80px;
-      width: 100%;
     }
   }
 </style>

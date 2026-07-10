@@ -99,8 +99,7 @@ main { min-height: 100svh; }
 .landing-name, .landing-nav, .landing-year, .landing-statement {
   position: absolute;
   z-index: 2;
-  mix-blend-mode: difference;
-  color: #fff;
+  color: var(--ink);
 }
 .landing-name { top: var(--pad); left: var(--pad); }
 .landing-nav { top: var(--pad); right: var(--pad); display: flex; gap: 5px; }
@@ -108,12 +107,12 @@ main { min-height: 100svh; }
 .landing-year { bottom: var(--pad); left: var(--pad); font-size: 12px; }
 .landing-statement { bottom: var(--pad); right: var(--pad); display: grid; gap: 1px; text-align: right; font-size: 12px; line-height: 1.08; }
 .landing-statement span { display: block; }
-.landing:not(:has(.landing-preview.is-visible)) .landing-name,
-.landing:not(:has(.landing-preview.is-visible)) .landing-nav,
-.landing:not(:has(.landing-preview.is-visible)) .landing-year,
-.landing:not(:has(.landing-preview.is-visible)) .landing-statement {
-  color: var(--ink);
-  mix-blend-mode: normal;
+.landing:has(.landing-preview.is-visible) .landing-name,
+.landing:has(.landing-preview.is-visible) .landing-nav,
+.landing:has(.landing-preview.is-visible) .landing-year,
+.landing:has(.landing-preview.is-visible) .landing-statement {
+  color: #fff;
+  text-shadow: 0 1px 14px rgba(0, 0, 0, .38);
 }
 
 /* Works — image-first stream */
@@ -146,39 +145,34 @@ main { min-height: 100svh; }
   min-height: 100svh;
   display: grid;
   grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: 1fr auto;
   gap: 18px;
-  padding: calc(var(--header-height) + 54px) var(--pad) 80px;
+  padding: calc(var(--header-height) + 54px) var(--pad) 28px;
 }
-.information-intro { grid-column: 1 / 8; }
+.information-intro { grid-column: 1 / 9; align-self: start; }
 .information-intro h1 {
   margin: 0;
-  font-size: clamp(40px, 6.8vw, 118px);
+  max-width: 10ch;
+  font-size: clamp(52px, 8.2vw, 144px);
   font-weight: 400;
-  line-height: .94;
-  letter-spacing: -.055em;
+  line-height: .9;
+  letter-spacing: -.06em;
 }
-.information-intro h1 span { display: block; }
-.information-statement {
-  width: min(520px, 75%);
-  margin: 70px 0 0 auto;
-  font-size: 16px;
-  line-height: 1.35;
+.information-contact {
+  grid-column: 10 / 13;
+  align-self: start;
+  padding-top: 4px;
+  font-size: 14px;
+  line-height: 1.3;
 }
-.information-block { margin-top: 56px; }
-.information-block h2 {
-  margin: 0 0 13px;
-  font-size: 11px;
-  font-weight: 400;
-}
-.information-block ul { margin: 0; padding: 0; list-style: none; }
-.information-block li, .information-block p { margin: 0; font-size: 14px; line-height: 1.35; }
-.information-practice { grid-column: 8 / 10; }
-.information-clients { grid-column: 10 / 12; }
-.information-contact { grid-column: 10 / 13; min-width: 220px; }
-.information-contact h2:not(:first-child) { margin-top: 24px; }
+.information-contact p { margin: 0 0 8px; }
 .information-contact a { border-bottom: 1px solid var(--line); }
-.information-location { margin-top: 24px !important; color: var(--muted); }
-.information-note { grid-column: 1 / 6; align-self: end; margin: 100px 0 0; color: var(--muted); font-size: 10px; line-height: 1.35; }
+.information-note {
+  grid-column: 1 / 5;
+  align-self: end;
+  margin: 0;
+  font-size: 10px;
+}
 
 /* Project */
 .project-detail { padding-top: var(--header-height); }
@@ -246,10 +240,9 @@ main { min-height: 100svh; }
   .work-card-meta span:last-child { grid-column: 3; }
 
   .information-grid { display: block; padding-top: calc(var(--header-height) + 42px); }
-  .information-intro h1 { font-size: clamp(48px, 15vw, 88px); }
-  .information-statement { width: 100%; margin: 54px 0 0; font-size: 18px; }
-  .information-block { margin-top: 64px; }
-  .information-note { margin-top: 100px; }
+  .information-intro h1 { max-width: 9ch; font-size: clamp(52px, 16vw, 92px); }
+  .information-contact { margin-top: 72px; font-size: 15px; }
+  .information-note { margin-top: 120px; }
 
   .project-heading { min-height: 31svh; display: block; padding-top: 70px; }
   .project-heading h1 { margin: 20px 0; text-align: left; font-size: clamp(56px, 18vw, 110px); }

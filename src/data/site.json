@@ -1,22 +1,9 @@
 {
-  "name": "YOUR NAME",
-  "role": "Styling & Art Direction",
-  "location": "Berlin / Worldwide",
-  "email": "hello@example.com",
-  "instagram": "https://www.instagram.com/",
-  "instagramLabel": "@yourname",
-  "intro": "Stylist and art director working across fashion, editorial and image-making.",
-  "about": "I develop visual worlds through styling, art direction and creative research. My practice moves between fashion, photography and culture, with a focus on precise image-making and collaborative processes.",
-  "services": [
-    "Styling",
-    "Art Direction",
-    "Creative Research"
-  ],
-  "clients": [
-    "Selected Magazine",
-    "Independent Editorial",
-    "Studio Project",
-    "Personal Research"
-  ],
-  "copyright": "All images are placeholders. Replace them with work you have permission to publish."
+  "name": "SHEN QU",
+  "location": "Berlin",
+  "email": "qushenowl@hotmail.com",
+  "instagram": "https://www.instagram.com/owlime/",
+  "instagramLabel": "Instagram",
+  "headline": "Art Direction. Styling. Production.",
+  "copyright": "© SHEN QU"
 }

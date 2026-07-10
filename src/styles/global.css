@@ -96,7 +96,7 @@ main { min-height: 100svh; }
   transition: opacity 300ms ease;
 }
 .landing:has(.landing-preview.is-visible) .landing-shade { opacity: 1; }
-.landing-name, .landing-nav, .landing-year, .landing-role {
+.landing-name, .landing-nav, .landing-year, .landing-statement {
   position: absolute;
   z-index: 2;
   mix-blend-mode: difference;
@@ -106,11 +106,12 @@ main { min-height: 100svh; }
 .landing-nav { top: var(--pad); right: var(--pad); display: flex; gap: 5px; }
 .landing-nav a:hover { font-style: italic; }
 .landing-year { bottom: var(--pad); left: var(--pad); font-size: 12px; }
-.landing-role { bottom: var(--pad); right: var(--pad); font-size: 12px; }
+.landing-statement { bottom: var(--pad); right: var(--pad); display: grid; gap: 1px; text-align: right; font-size: 12px; line-height: 1.08; }
+.landing-statement span { display: block; }
 .landing:not(:has(.landing-preview.is-visible)) .landing-name,
 .landing:not(:has(.landing-preview.is-visible)) .landing-nav,
 .landing:not(:has(.landing-preview.is-visible)) .landing-year,
-.landing:not(:has(.landing-preview.is-visible)) .landing-role {
+.landing:not(:has(.landing-preview.is-visible)) .landing-statement {
   color: var(--ink);
   mix-blend-mode: normal;
 }
@@ -156,7 +157,8 @@ main { min-height: 100svh; }
   line-height: .94;
   letter-spacing: -.055em;
 }
-.information-intro > p {
+.information-intro h1 span { display: block; }
+.information-statement {
   width: min(520px, 75%);
   margin: 70px 0 0 auto;
   font-size: 16px;
@@ -172,7 +174,7 @@ main { min-height: 100svh; }
 .information-block li, .information-block p { margin: 0; font-size: 14px; line-height: 1.35; }
 .information-practice { grid-column: 8 / 10; }
 .information-clients { grid-column: 10 / 12; }
-.information-contact { grid-column: 12 / 13; min-width: 145px; }
+.information-contact { grid-column: 10 / 13; min-width: 220px; }
 .information-contact h2:not(:first-child) { margin-top: 24px; }
 .information-contact a { border-bottom: 1px solid var(--line); }
 .information-location { margin-top: 24px !important; color: var(--muted); }
@@ -234,8 +236,8 @@ main { min-height: 100svh; }
   .landing { font-size: 18px; }
   .landing-preview { opacity: .12; }
   .landing-preview.is-visible { opacity: .35; }
-  .landing-name, .landing-nav, .landing-year, .landing-role { color: var(--ink); mix-blend-mode: normal; }
-  .landing-role { max-width: 48vw; text-align: right; }
+  .landing-name, .landing-nav, .landing-year, .landing-statement { color: var(--ink); mix-blend-mode: normal; }
+  .landing-statement { max-width: 48vw; text-align: right; }
 
   .work-row { min-height: auto; padding: 45px var(--pad) 74px; }
   .work-card figure { width: 100%; height: auto; aspect-ratio: 4 / 5; }
@@ -245,7 +247,7 @@ main { min-height: 100svh; }
 
   .information-grid { display: block; padding-top: calc(var(--header-height) + 42px); }
   .information-intro h1 { font-size: clamp(48px, 15vw, 88px); }
-  .information-intro > p { width: 100%; margin: 54px 0 0; font-size: 18px; }
+  .information-statement { width: 100%; margin: 54px 0 0; font-size: 18px; }
   .information-block { margin-top: 64px; }
   .information-note { margin-top: 100px; }
 

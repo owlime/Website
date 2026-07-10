@@ -11,19 +11,27 @@ import site from '../data/site.json';
     </h1>
 
     <div class="information-contact">
-      <p>{site.location}</p>
+      <p class="information-location">
+        {site.location}
+      </p>
 
-      <a href={`mailto:${site.email}`}>
+      <a
+        class="information-email"
+        href={`mailto:${site.email}`}
+      >
         {site.email}
       </a>
 
-      <a
-        href={site.instagram}
-        target="_blank"
-        rel="noreferrer"
-      >
-        @owlime
-      </a>
+      <p class="information-instagram">
+        <span>Instagram: </span>
+        <a
+          href={site.instagram}
+          target="_blank"
+          rel="noreferrer"
+        >
+          @owlime
+        </a>
+      </p>
     </div>
 
   </section>
@@ -39,51 +47,66 @@ import site from '../data/site.json';
     min-height: calc(100svh - 80px);
     padding: 70px 10px 40px;
     color: #111111;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 12px;
-    font-weight: 300;
-    line-height: 1.3;
-    letter-spacing: -0.01em;
-    -webkit-font-smoothing: antialiased;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.25;
+    letter-spacing: 0;
   }
 
   .information-headline {
     position: absolute;
     top: 70px;
     left: 10px;
-    max-width: 300px;
+    max-width: 320px;
     margin: 0;
-    font: inherit;
+
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: 400;
+    line-height: inherit;
   }
 
   .information-contact {
     position: absolute;
     top: 70px;
     right: 22%;
+
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: 400;
   }
 
-  .information-contact p {
-    margin: 0 0 18px;
+  .information-location {
+    margin: 0 0 38px;
   }
 
-  .information-contact a {
+  .information-email {
     display: block;
     margin: 0 0 4px;
+  }
+
+  .information-instagram {
+    margin: 0;
+  }
+
+  .information a {
     color: inherit;
     text-decoration: none;
   }
 
-  .information-contact a:hover {
-    opacity: 0.45;
+  .information a:hover {
+    opacity: 0.5;
   }
 
   @media (max-width: 700px) {
     .information {
-      min-height: calc(100svh - 60px);
-      padding-top: 90px;
+      padding: 90px 10px 40px;
       font-size: 12px;
     }
 

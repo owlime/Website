@@ -1,20 +1,27 @@
 {
-  "title": "Field Notes",
-  "slug": "field-notes",
+  "title": "Egshig",
+  "slug": "egshig_IZAIO management",
   "year": "2025",
-  "category": "Personal",
-  "client": "Research Series",
   "order": 3,
   "published": true,
-  "cover": "/uploads/project-03-cover.svg",
-  "description": "An ongoing visual research project collecting gestures, materials and accidental compositions.",
-  "credits": [
-    { "role": "Concept & Styling", "name": "Your Name" },
-    { "role": "Photography", "name": "Collaborator Name" }
-  ],
+  "cover": "/uploads/screenshot-2026-06-16-at-145713.png",
   "gallery": [
-    "/uploads/project-03-01.svg",
-    "/uploads/project-03-02.svg",
-    "/uploads/project-03-03.svg"
+    "/uploads/screenshot-2026-06-16-at-145924.png",
+    "/uploads/screenshot-2026-06-15-at-233745-1.png",
+    "/uploads/screenshot-2026-06-16-at-145831.png"
+  ],
+  "credits": [
+    {
+      "role": "Art Direction & Styling",
+      "name": "Shen QU"
+    },
+    {
+      "role": "Photography",
+      "name": "Xinyue"
+    },
+    {
+      "role": "Hair & Makeup",
+      "name": "MAISS"
+    }
   ]
 }

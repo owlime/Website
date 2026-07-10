@@ -334,3 +334,79 @@ main { min-height: 100svh; }
     animation-duration: .01ms !important;
   }
 }
+/* SHEN QU — refined typography */
+
+html,
+body,
+button,
+input,
+textarea,
+select {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  font-weight: 300;
+  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body,
+a,
+p,
+span,
+nav,
+h1,
+h2,
+h3,
+dt,
+dd {
+  font-weight: 300;
+}
+
+.site-header,
+.single-image-home,
+.shenqu-home,
+.gallery-sidebar,
+.information-grid,
+.project-heading,
+.project-information,
+.project-end {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  font-weight: 300 !important;
+}
+
+.site-header,
+.single-image-home,
+.shenqu-home,
+.gallery-sidebar {
+  font-size: 12px !important;
+}
+
+.information-grid {
+  font-size: 12px;
+  line-height: 1.25;
+}
+
+.information-intro h1,
+.information-contact {
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 1.25;
+}
+
+.information-contact .contact-group {
+  margin-top: 42px;
+}
+
+.information-contact p {
+  margin: 0;
+}
+
+.information-contact a {
+  display: inline-block;
+  margin-top: 2px;
+}
+
+.project-heading h1,
+.project-description p {
+  font-weight: 300;
+}

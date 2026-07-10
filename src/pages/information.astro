@@ -13,9 +13,7 @@ const year = new Date().getFullYear();
   <main class="information-layout">
 
     <aside class="information-sidebar">
-      <a class="information-site-name" href="/">
-        {site.name}
-      </a>
+      <a class="information-site-name" href="/">{site.name}</a>
 
       <div class="information-sidebar-bottom">
         <nav aria-label="Main navigation">
@@ -28,9 +26,7 @@ const year = new Date().getFullYear();
     </aside>
 
     <section class="information-content">
-      <p class="information-headline">
-        {site.headline}
-      </p>
+      <p class="information-headline">{site.headline}</p>
 
       <div class="information-contact">
         <p>{site.location}</p>
@@ -82,11 +78,9 @@ const year = new Date().getFullYear();
     height: 100svh;
     padding: 10px;
     box-sizing: border-box;
-
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-
     background: #ffffff;
   }
 
@@ -117,7 +111,8 @@ const year = new Date().getFullYear();
   .information-content {
     margin-left: 180px;
     padding: 34px 30px 80px;
-    max-width: 420px;
+    width: min(440px, calc(100vw - 240px));
+    box-sizing: border-box;
   }
 
   .information-headline {
@@ -160,6 +155,7 @@ const year = new Date().getFullYear();
     .information-content {
       margin-left: 0;
       padding: 36px 18px 80px;
+      width: 100%;
     }
   }
 </style>

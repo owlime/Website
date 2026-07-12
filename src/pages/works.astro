@@ -7,14 +7,16 @@ const projects = getProjects();
 const year = new Date().getFullYear();
 
 /*
-  Desktop uses three independent columns so mixed image ratios
-  do not create large empty grid rows.
-  Mobile uses one normal two-column grid so the reading order stays exact.
+  按 CMS 的 Display order 分配到各列：
+  电脑版：1 左、2 中、3 右、4 左……
+  手机版：1 左、2 右、3 左、4 右……
 */
 const desktopColumns = [[], [], []];
+const mobileColumns = [[], []];
 
 projects.forEach((project, index) => {
   desktopColumns[index % 3].push(project);
+  mobileColumns[index % 2].push(project);
 });
 ---
 
@@ -40,14 +42,14 @@ projects.forEach((project, index) => {
       </div>
     </aside>
 
-    <!-- Desktop: three-column masonry, no cropping -->
+    <!-- 电脑版：三列瀑布流 -->
     <section
-      class="sq-desktop-masonry"
+      class="sq-masonry sq-masonry-desktop"
       aria-label="Projects"
     >
       {
         desktopColumns.map((column) => (
-          <div class="sq-desktop-column">
+          <div class="sq-masonry-column">
             {
               column.map((project) => (
                 <article class="sq-work-item">
@@ -77,33 +79,39 @@ projects.forEach((project, index) => {
       }
     </section>
 
-    <!-- Mobile: normal two-column grid keeps exact Display order -->
+    <!-- 手机版：两列独立瀑布流 -->
     <section
-      class="sq-mobile-grid"
+      class="sq-masonry sq-masonry-mobile"
       aria-label="Projects"
     >
       {
-        projects.map((project) => (
-          <article class="sq-mobile-item">
-            <a
-              class="sq-work-link"
-              href={`/projects/${project.slug}/`}
-            >
-              <figure class="sq-work-figure">
-                <img
-                  class="sq-work-cover"
-                  src={project.cover}
-                  alt={project.title}
-                  loading="lazy"
-                />
+        mobileColumns.map((column) => (
+          <div class="sq-masonry-column">
+            {
+              column.map((project) => (
+                <article class="sq-work-item">
+                  <a
+                    class="sq-work-link"
+                    href={`/projects/${project.slug}/`}
+                  >
+                    <figure class="sq-work-figure">
+                      <img
+                        class="sq-work-cover"
+                        src={project.cover}
+                        alt={project.title}
+                        loading="lazy"
+                      />
 
-                <figcaption class="sq-mobile-caption">
-                  {project.title}
-                  {project.year ? `, ${project.year}` : ''}
-                </figcaption>
-              </figure>
-            </a>
-          </article>
+                      <figcaption class="sq-work-caption">
+                        {project.title}
+                        {project.year ? `, ${project.year}` : ''}
+                      </figcaption>
+                    </figure>
+                  </a>
+                </article>
+              ))
+            }
+          </div>
         ))
       }
     </section>
@@ -140,6 +148,8 @@ projects.forEach((project, index) => {
     min-height: 100svh;
     background: #ffffff;
   }
+
+  /* ---------- 左侧导航 ---------- */
 
   .sq-works-sidebar {
     position: fixed;
@@ -181,27 +191,19 @@ projects.forEach((project, index) => {
     margin: 0;
   }
 
-  /* Desktop masonry */
+  /* ---------- 通用瀑布流 ---------- */
 
-  .sq-desktop-masonry {
-    margin-left: 180px;
-    padding: 34px 52px 120px 38px;
+  .sq-masonry {
     box-sizing: border-box;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    gap: clamp(40px, 4.5vw, 72px);
   }
 
-  .sq-desktop-column {
+  .sq-masonry-column {
     flex: 1 1 0;
     min-width: 0;
-    max-width: 390px;
   }
 
   .sq-work-item {
     width: 100%;
-    margin: 0 0 clamp(58px, 6vw, 90px);
   }
 
   .sq-work-link,
@@ -230,18 +232,37 @@ projects.forEach((project, index) => {
     text-align: left;
   }
 
-  .sq-mobile-grid {
+  /* ---------- 电脑版 ---------- */
+
+  .sq-masonry-desktop {
+    margin-left: 180px;
+    padding: 34px 52px 120px 38px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: clamp(40px, 4.5vw, 72px);
+  }
+
+  .sq-masonry-desktop .sq-masonry-column {
+    max-width: 390px;
+  }
+
+  .sq-masonry-desktop .sq-work-item {
+    margin: 0 0 clamp(58px, 6vw, 90px);
+  }
+
+  .sq-masonry-mobile {
     display: none;
   }
 
   @media (max-width: 1050px) and (min-width: 701px) {
-    .sq-desktop-masonry {
+    .sq-masonry-desktop {
       gap: 34px;
       padding-right: 34px;
     }
   }
 
-  /* Mobile */
+  /* ---------- 手机版 ---------- */
 
   @media (max-width: 700px) {
     .sq-works-sidebar {
@@ -267,53 +288,49 @@ projects.forEach((project, index) => {
     }
 
     .sq-works-sidebar-bottom nav {
-      margin: 0;
       display: flex;
       flex-direction: column;
       align-items: flex-start;
+      margin: 0;
     }
 
     .sq-works-sidebar-bottom p {
       position: fixed;
       bottom: calc(12px + env(safe-area-inset-bottom));
       left: 12px;
-      z-index: 40;
+      z-index: 50;
       margin: 0;
-      padding-right: 5px;
+      padding-right: 6px;
       background: rgba(255, 255, 255, 0.96);
       font-size: 10px;
     }
 
-    .sq-desktop-masonry {
+    .sq-masonry-desktop {
       display: none;
     }
 
-    /*
-      Normal grid preserves CMS order:
-      1 left, 2 right, 3 left, 4 right.
-    */
-    .sq-mobile-grid {
-      display: grid;
+    .sq-masonry-mobile {
+      display: flex;
       width: 100%;
       margin: 0;
       padding: 18px 16px 100px;
-      box-sizing: border-box;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      column-gap: 20px;
-      row-gap: 52px;
-      align-items: start;
+      align-items: flex-start;
+      gap: 20px;
     }
 
-    .sq-mobile-item {
-      display: block;
-      width: 100%;
-      min-width: 0;
-      margin: 0;
+    .sq-masonry-mobile .sq-masonry-column {
+      width: calc(50% - 10px);
+      max-width: none;
+      flex: 0 0 calc(50% - 10px);
     }
 
-    .sq-mobile-caption {
-      margin: 7px 0 0;
-      text-align: center;
+    .sq-masonry-mobile .sq-work-item {
+      margin: 0 0 42px;
+    }
+
+    .sq-masonry-mobile .sq-work-caption {
+      margin-top: 7px;
+      text-align: left;
       font-size: 11px;
       line-height: 1.2;
     }

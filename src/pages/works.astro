@@ -311,5 +311,15 @@ const year = new Date().getFullYear();
   .sq-project-caption {
     margin-top: 8px;
   }
-}
+}  /* Desktop: make the next row visible sooner */
+  @media (min-width: 701px) {
+    .sq-desktop-grid {
+      row-gap: 48px;
+    }
+
+    .sq-desktop-frame {
+      height: clamp(300px, 27vw, 420px);
+      align-items: flex-end;
+    }
+  }
 </style>

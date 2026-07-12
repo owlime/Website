@@ -1,11 +1,19 @@
 media:
   - name: images
-    label: Project images
+    label: Site media
     input: public/uploads
     output: /uploads
     rename: safe
-    categories: [image]
-    extensions: [jpg, jpeg, png, webp, gif]
+    categories:
+      - image
+      - video
+    extensions:
+      - jpg
+      - jpeg
+      - png
+      - webp
+      - gif
+      - mp4
 
 content:
   - name: site
@@ -13,65 +21,220 @@ content:
     type: file
     path: src/data/site.json
     format: json
+
     fields:
       - name: name
         label: Name
         type: string
         required: true
+
       - name: headline
         label: Practice
         type: string
+
       - name: location
         label: Location
         type: string
+
       - name: email
         label: Email
         type: string
+
       - name: instagram
         label: Instagram URL
         type: string
+
       - name: instagramLabel
         label: Instagram display name
         type: string
+
       - name: copyright
         label: Copyright
         type: string
+
+      - name: homepage
+        label: Homepage media
+        type: object
+
+        fields:
+          - name: desktopType
+            label: Desktop type
+            type: select
+            required: true
+            options:
+              values:
+                - name: video
+                  label: Video
+                - name: image
+                  label: Image
+
+          - name: desktopImage
+            label: Desktop image
+            type: image
+            options:
+              media: images
+              categories:
+                - image
+              extensions:
+                - jpg
+                - jpeg
+                - png
+                - webp
+                - gif
+              rename: safe
+
+          - name: desktopVideo
+            label: Desktop video MP4
+            type: file
+            options:
+              media: images
+              categories:
+                - video
+              extensions:
+                - mp4
+              rename: safe
+
+          - name: desktopPoster
+            label: Desktop video poster
+            type: image
+            options:
+              media: images
+              categories:
+                - image
+              extensions:
+                - jpg
+                - jpeg
+                - png
+                - webp
+              rename: safe
+
+          - name: desktopFit
+            label: Desktop fit
+            type: select
+            required: true
+            options:
+              values:
+                - name: contain
+                  label: Contain — complete image
+                - name: cover
+                  label: Cover — fill and crop
+
+          - name: mobileType
+            label: Mobile type
+            type: select
+            required: true
+            options:
+              values:
+                - name: same
+                  label: Same as desktop
+                - name: video
+                  label: Separate mobile video
+                - name: image
+                  label: Separate mobile image
+
+          - name: mobileImage
+            label: Mobile image
+            type: image
+            options:
+              media: images
+              categories:
+                - image
+              extensions:
+                - jpg
+                - jpeg
+                - png
+                - webp
+                - gif
+              rename: safe
+
+          - name: mobileVideo
+            label: Mobile video MP4
+            type: file
+            options:
+              media: images
+              categories:
+                - video
+              extensions:
+                - mp4
+              rename: safe
+
+          - name: mobilePoster
+            label: Mobile video poster
+            type: image
+            options:
+              media: images
+              categories:
+                - image
+              extensions:
+                - jpg
+                - jpeg
+                - png
+                - webp
+              rename: safe
+
+          - name: mobileFit
+            label: Mobile fit
+            type: select
+            required: true
+            options:
+              values:
+                - name: same
+                  label: Same as desktop
+                - name: contain
+                  label: Contain — complete image
+                - name: cover
+                  label: Cover — fill and crop
 
   - name: projects
     label: Projects
     type: collection
     path: src/data/projects
     format: json
+
     filename:
       template: "{slug}.json"
       field: create
+
     view:
       primary: title
-      fields: [title, year, published, order]
-      sort: [order, year, title]
+      fields:
+        - title
+        - year
+        - published
+        - order
+      sort:
+        - order
+        - year
+        - title
       default:
         sort: order
         order: asc
+
     fields:
       - name: title
         label: Project title
         type: string
         required: true
+
       - name: slug
         label: URL slug
         type: string
         required: true
+
       - name: year
         label: Year
         type: string
+
       - name: order
         label: Display order
         type: number
         required: true
+
       - name: published
         label: Show on website
         type: boolean
         default: true
+
       - name: cover
         label: Cover image
         type: image
@@ -79,8 +242,14 @@ content:
         options:
           media: images
           unique: true
-          extensions: [jpg, jpeg, png, webp, gif]
+          extensions:
+            - jpg
+            - jpeg
+            - png
+            - webp
+            - gif
           rename: safe
+
       - name: gallery
         label: Project gallery
         type: image
@@ -88,8 +257,14 @@ content:
           media: images
           multiple: true
           unique: true
-          extensions: [jpg, jpeg, png, webp, gif]
+          extensions:
+            - jpg
+            - jpeg
+            - png
+            - webp
+            - gif
           rename: safe
+
       - name: credits
         label: Credits
         type: object
@@ -97,10 +272,12 @@ content:
           collapsible:
             collapsed: true
             summary: "{role}: {name}"
+
         fields:
           - name: role
             label: Role
             type: string
+
           - name: name
             label: Name
             type: string

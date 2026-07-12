@@ -4,16 +4,8 @@ media:
     input: public/uploads
     output: /uploads
     rename: safe
-    categories:
-      - image
-      - video
-    extensions:
-      - jpg
-      - jpeg
-      - png
-      - webp
-      - gif
-      - mp4
+    categories: [image, video]
+    extensions: [jpg, jpeg, png, webp, gif, mp4]
 
 content:
   - name: site
@@ -21,7 +13,6 @@ content:
     type: file
     path: src/data/site.json
     format: json
-
     fields:
       - name: name
         label: Name
@@ -55,7 +46,6 @@ content:
       - name: homepage
         label: Homepage media
         type: object
-
         fields:
           - name: desktopType
             label: Desktop type
@@ -73,25 +63,17 @@ content:
             type: image
             options:
               media: images
-              categories:
-                - image
-              extensions:
-                - jpg
-                - jpeg
-                - png
-                - webp
-                - gif
+              categories: [image]
+              extensions: [jpg, jpeg, png, webp, gif]
               rename: safe
 
           - name: desktopVideo
-            label: Desktop video MP4
+            label: Desktop video (MP4)
             type: file
             options:
               media: images
-              categories:
-                - video
-              extensions:
-                - mp4
+              categories: [video]
+              extensions: [mp4]
               rename: safe
 
           - name: desktopPoster
@@ -99,13 +81,8 @@ content:
             type: image
             options:
               media: images
-              categories:
-                - image
-              extensions:
-                - jpg
-                - jpeg
-                - png
-                - webp
+              categories: [image]
+              extensions: [jpg, jpeg, png, webp]
               rename: safe
 
           - name: desktopFit
@@ -115,7 +92,7 @@ content:
             options:
               values:
                 - name: contain
-                  label: Contain — complete image
+                  label: Contain — show complete media
                 - name: cover
                   label: Cover — fill and crop
 
@@ -137,25 +114,17 @@ content:
             type: image
             options:
               media: images
-              categories:
-                - image
-              extensions:
-                - jpg
-                - jpeg
-                - png
-                - webp
-                - gif
+              categories: [image]
+              extensions: [jpg, jpeg, png, webp, gif]
               rename: safe
 
           - name: mobileVideo
-            label: Mobile video MP4
+            label: Mobile video (MP4)
             type: file
             options:
               media: images
-              categories:
-                - video
-              extensions:
-                - mp4
+              categories: [video]
+              extensions: [mp4]
               rename: safe
 
           - name: mobilePoster
@@ -163,13 +132,8 @@ content:
             type: image
             options:
               media: images
-              categories:
-                - image
-              extensions:
-                - jpg
-                - jpeg
-                - png
-                - webp
+              categories: [image]
+              extensions: [jpg, jpeg, png, webp]
               rename: safe
 
           - name: mobileFit
@@ -181,7 +145,7 @@ content:
                 - name: same
                   label: Same as desktop
                 - name: contain
-                  label: Contain — complete image
+                  label: Contain — show complete media
                 - name: cover
                   label: Cover — fill and crop
 
@@ -190,26 +154,14 @@ content:
     type: collection
     path: src/data/projects
     format: json
-
-    filename:
-      template: "{slug}.json"
-      field: create
-
+    filename: "{fields.slug}.json"
     view:
       primary: title
-      fields:
-        - title
-        - year
-        - published
-        - order
-      sort:
-        - order
-        - year
-        - title
+      fields: [title, year, published]
+      sort: [title, year]
       default:
-        sort: order
+        sort: title
         order: asc
-
     fields:
       - name: title
         label: Project title
@@ -220,20 +172,23 @@ content:
         label: URL slug
         type: string
         required: true
+        pattern:
+          regex: "^[a-z0-9-]+$"
+          message: "Use lowercase letters, numbers, and hyphens only."
 
       - name: year
         label: Year
         type: string
 
-      - name: order
-        label: Display order
-        type: number
-        required: true
-
       - name: published
         label: Show on website
         type: boolean
         default: true
+
+      - name: order
+        label: Legacy display order
+        type: number
+        hidden: true
 
       - name: cover
         label: Cover image
@@ -242,12 +197,7 @@ content:
         options:
           media: images
           unique: true
-          extensions:
-            - jpg
-            - jpeg
-            - png
-            - webp
-            - gif
+          extensions: [jpg, jpeg, png, webp, gif]
           rename: safe
 
       - name: gallery
@@ -257,12 +207,7 @@ content:
           media: images
           multiple: true
           unique: true
-          extensions:
-            - jpg
-            - jpeg
-            - png
-            - webp
-            - gif
+          extensions: [jpg, jpeg, png, webp, gif]
           rename: safe
 
       - name: credits
@@ -272,7 +217,6 @@ content:
           collapsible:
             collapsed: true
             summary: "{role}: {name}"
-
         fields:
           - name: role
             label: Role
@@ -281,3 +225,20 @@ content:
           - name: name
             label: Name
             type: string
+
+  - name: project_order
+    label: Project order
+    type: file
+    path: src/data/project-order.json
+    format: json
+    list: true
+    fields:
+      - name: project
+        label: Project
+        type: reference
+        required: true
+        options:
+          collection: projects
+          search: "title,slug,year"
+          value: "{path}"
+          label: "{title}, {year}"

@@ -5,14 +5,25 @@ import site from '../data/site.json';
 
 const projects = getProjects();
 const year = new Date().getFullYear();
+
+/*
+  Desktop uses three independent columns so mixed image ratios
+  do not create large empty grid rows.
+  Mobile uses one normal two-column grid so the reading order stays exact.
+*/
+const desktopColumns = [[], [], []];
+
+projects.forEach((project, index) => {
+  desktopColumns[index % 3].push(project);
+});
 ---
 
 <BaseLayout
   title="Works"
   showChrome={false}
-  bodyClass="sq-works-body"
+  bodyClass="sq-works-page"
 >
-  <div class="sq-works-page">
+  <div class="sq-works-layout">
 
     <aside class="sq-works-sidebar">
       <a class="sq-works-name" href="/">
@@ -29,59 +40,68 @@ const year = new Date().getFullYear();
       </div>
     </aside>
 
-    <!-- 电脑端：统一画框，完整显示图片 -->
+    <!-- Desktop: three-column masonry, no cropping -->
     <section
-      class="sq-desktop-grid"
+      class="sq-desktop-masonry"
       aria-label="Projects"
     >
       {
-        projects.map((project) => (
-          <article class="sq-desktop-item">
-            <a
-              class="sq-project-link"
-              href={`/projects/${project.slug}/`}
-            >
-              <div class="sq-desktop-frame">
-                <img
-                  src={project.cover}
-                  alt={project.title}
-                  loading="lazy"
-                />
-              </div>
+        desktopColumns.map((column) => (
+          <div class="sq-desktop-column">
+            {
+              column.map((project) => (
+                <article class="sq-work-item">
+                  <a
+                    class="sq-work-link"
+                    href={`/projects/${project.slug}/`}
+                  >
+                    <figure class="sq-work-figure">
+                      <img
+                        class="sq-work-cover"
+                        src={project.cover}
+                        alt={project.title}
+                        loading="lazy"
+                      />
 
-              <p class="sq-project-caption">
-                {project.title}
-                {project.year ? `, ${project.year}` : ''}
-              </p>
-            </a>
-          </article>
+                      <figcaption class="sq-work-caption">
+                        {project.title}
+                        {project.year ? `, ${project.year}` : ''}
+                      </figcaption>
+                    </figure>
+                  </a>
+                </article>
+              ))
+            }
+          </div>
         ))
       }
     </section>
 
-    <!-- 手机版：两列，保持图片原始比例 -->
+    <!-- Mobile: normal two-column grid keeps exact Display order -->
     <section
-      class="sq-mobile-columns"
+      class="sq-mobile-grid"
       aria-label="Projects"
     >
       {
         projects.map((project) => (
           <article class="sq-mobile-item">
             <a
-              class="sq-project-link"
+              class="sq-work-link"
               href={`/projects/${project.slug}/`}
             >
-              <img
-                class="sq-mobile-cover"
-                src={project.cover}
-                alt={project.title}
-                loading="lazy"
-              />
+              <figure class="sq-work-figure">
+                <img
+                  class="sq-work-cover"
+                  src={project.cover}
+                  alt={project.title}
+                  loading="lazy"
+                />
 
-              <p class="sq-mobile-caption">
-                {project.title}
-                {project.year ? `, ${project.year}` : ''}
-              </p>
+                <figcaption class="sq-mobile-caption">
+                  {project.title}
+                  {project.year ? `, ${project.year}` : ''}
+                </figcaption>
+              </figure>
             </a>
           </article>
         ))
@@ -100,14 +120,14 @@ const year = new Date().getFullYear();
     color: #111111;
   }
 
-  :global(body.sq-works-body) {
+  :global(body.sq-works-page) {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 12px;
     font-weight: 400;
     line-height: 1.25;
   }
 
-  :global(body.sq-works-body .skip-link) {
+  :global(body.sq-works-page .skip-link) {
     position: fixed;
     top: -1000px;
     left: -1000px;
@@ -116,12 +136,10 @@ const year = new Date().getFullYear();
     overflow: hidden;
   }
 
-  .sq-works-page {
+  .sq-works-layout {
     min-height: 100svh;
     background: #ffffff;
   }
-
-  /* ---------- 左侧导航 ---------- */
 
   .sq-works-sidebar {
     position: fixed;
@@ -141,15 +159,15 @@ const year = new Date().getFullYear();
 
   .sq-works-name,
   .sq-works-sidebar a,
-  .sq-project-link {
+  .sq-work-link {
     color: #111111;
     text-decoration: none;
   }
 
   .sq-works-name:hover,
   .sq-works-sidebar a:hover,
-  .sq-project-link:hover {
-    opacity: 0.52;
+  .sq-work-link:hover {
+    opacity: 0.55;
   }
 
   .sq-works-sidebar-bottom nav {
@@ -163,69 +181,67 @@ const year = new Date().getFullYear();
     margin: 0;
   }
 
-  /* ---------- 电脑端 ---------- */
+  /* Desktop masonry */
 
-  .sq-desktop-grid {
+  .sq-desktop-masonry {
     margin-left: 180px;
-    padding: 30px 46px 130px 34px;
+    padding: 34px 52px 120px 38px;
     box-sizing: border-box;
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    column-gap: clamp(34px, 4vw, 68px);
-    row-gap: 82px;
-    align-items: start;
-  }
-
-  .sq-desktop-item {
-    min-width: 0;
-    width: 100%;
-  }
-
-  /*
-    所有项目使用相同高度的隐形白色画框。
-    图片使用 contain，因此绝对不会被裁切。
-  */
-  .sq-desktop-frame {
-    width: 100%;
-    height: clamp(320px, 32vw, 500px);
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
-    overflow: hidden;
-    background: #ffffff;
+    gap: clamp(40px, 4.5vw, 72px);
   }
 
-  .sq-desktop-frame img {
+  .sq-desktop-column {
+    flex: 1 1 0;
+    min-width: 0;
+    max-width: 390px;
+  }
+
+  .sq-work-item {
+    width: 100%;
+    margin: 0 0 clamp(58px, 6vw, 90px);
+  }
+
+  .sq-work-link,
+  .sq-work-figure {
     display: block;
-    width: auto;
+    width: 100%;
+  }
+
+  .sq-work-figure {
+    margin: 0;
+    padding: 0;
+  }
+
+  .sq-work-cover {
+    display: block;
+    width: 100%;
     height: auto;
-    max-width: 100%;
-    max-height: 100%;
     object-fit: contain;
   }
 
-  .sq-project-caption {
-    margin: 8px 0 0;
+  .sq-work-caption {
+    display: block;
+    width: 100%;
+    margin: 7px 0 0;
+    padding: 0;
     text-align: left;
   }
 
-  .sq-mobile-columns {
+  .sq-mobile-grid {
     display: none;
   }
 
-  /* ---------- 中等电脑 / 平板 ---------- */
-
   @media (max-width: 1050px) and (min-width: 701px) {
-    .sq-desktop-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .sq-desktop-frame {
-      height: clamp(340px, 46vw, 520px);
+    .sq-desktop-masonry {
+      gap: 34px;
+      padding-right: 34px;
     }
   }
 
-  /* ---------- 手机版：保持现有两列感觉 ---------- */
+  /* Mobile */
 
   @media (max-width: 700px) {
     .sq-works-sidebar {
@@ -259,42 +275,40 @@ const year = new Date().getFullYear();
 
     .sq-works-sidebar-bottom p {
       position: fixed;
-      bottom: 12px;
+      bottom: calc(12px + env(safe-area-inset-bottom));
       left: 12px;
-      z-index: 30;
+      z-index: 40;
       margin: 0;
       padding-right: 5px;
       background: rgba(255, 255, 255, 0.96);
       font-size: 10px;
     }
 
-    .sq-desktop-grid {
+    .sq-desktop-masonry {
       display: none;
     }
 
-    .sq-mobile-columns {
-      display: block;
+    /*
+      Normal grid preserves CMS order:
+      1 left, 2 right, 3 left, 4 right.
+    */
+    .sq-mobile-grid {
+      display: grid;
       width: 100%;
       margin: 0;
-      padding: 18px 16px 80px;
+      padding: 18px 16px 100px;
       box-sizing: border-box;
-      column-count: 2;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       column-gap: 20px;
+      row-gap: 52px;
+      align-items: start;
     }
 
     .sq-mobile-item {
-      display: inline-block;
-      width: 100%;
-      margin: 0 0 52px;
-      break-inside: avoid;
-      vertical-align: top;
-    }
-
-    .sq-mobile-cover {
       display: block;
       width: 100%;
-      height: auto;
-      object-fit: contain;
+      min-width: 0;
+      margin: 0;
     }
 
     .sq-mobile-caption {
@@ -302,24 +316,6 @@ const year = new Date().getFullYear();
       text-align: center;
       font-size: 11px;
       line-height: 1.2;
-    }
-  }@media (min-width: 701px) {
-  .sq-desktop-frame {
-    align-items: flex-end;
-  }
-
-  .sq-project-caption {
-    margin-top: 8px;
-  }
-}  /* Desktop: make the next row visible sooner */
-  @media (min-width: 701px) {
-    .sq-desktop-grid {
-      row-gap: 48px;
-    }
-
-    .sq-desktop-frame {
-      height: clamp(300px, 27vw, 420px);
-      align-items: flex-end;
     }
   }
 </style>

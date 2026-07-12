@@ -5,5 +5,17 @@
   "instagram": "https://www.instagram.com/owlime/",
   "instagramLabel": "@owlime",
   "headline": "Art Direction. Styling. Production.",
-  "copyright": "© SHEN QU"
+  "copyright": "© SHEN QU",
+  "homepage": {
+    "desktopType": "video",
+    "desktopImage": "",
+    "desktopVideo": "/uploads/Home Video.mp4",
+    "desktopPoster": "",
+    "desktopFit": "contain",
+    "mobileType": "same",
+    "mobileImage": "",
+    "mobileVideo": "",
+    "mobilePoster": "",
+    "mobileFit": "same"
+  }
 }

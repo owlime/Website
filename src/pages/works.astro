@@ -5,26 +5,14 @@ import site from '../data/site.json';
 
 const projects = getProjects();
 const year = new Date().getFullYear();
-
-/*
-  分别为电脑和手机建立独立瀑布流列。
-  项目顺序仍然按照 CMS 中的 order 排列。
-*/
-const desktopColumns = [[], [], []];
-const mobileColumns = [[], []];
-
-projects.forEach((project, index) => {
-  desktopColumns[index % 3].push(project);
-  mobileColumns[index % 2].push(project);
-});
 ---
 
 <BaseLayout
   title="Works"
   showChrome={false}
-  bodyClass="sq-works-page"
+  bodyClass="sq-works-body"
 >
-  <main class="sq-works-layout">
+  <div class="sq-works-page">
 
     <aside class="sq-works-sidebar">
       <a class="sq-works-name" href="/">
@@ -41,77 +29,66 @@ projects.forEach((project, index) => {
       </div>
     </aside>
 
-    <!-- 电脑版：三列瀑布流 -->
+    <!-- 电脑端：统一画框，完整显示图片 -->
     <section
-      class="sq-masonry sq-masonry-desktop"
+      class="sq-desktop-grid"
       aria-label="Projects"
     >
       {
-        desktopColumns.map((column) => (
-          <div class="sq-masonry-column">
-            {
-              column.map((project) => (
-                <article class="sq-work-item">
-                  <a
-                    class="sq-work-link"
-                    href={`/projects/${project.slug}/`}
-                  >
-                    <img
-                      class="sq-work-cover"
-                      src={project.cover}
-                      alt={project.title}
-                      loading="lazy"
-                    />
+        projects.map((project) => (
+          <article class="sq-desktop-item">
+            <a
+              class="sq-project-link"
+              href={`/projects/${project.slug}/`}
+            >
+              <div class="sq-desktop-frame">
+                <img
+                  src={project.cover}
+                  alt={project.title}
+                  loading="lazy"
+                />
+              </div>
 
-                    <p class="sq-work-caption">
-                      {project.title}
-                      {project.year ? `, ${project.year}` : ''}
-                    </p>
-                  </a>
-                </article>
-              ))
-            }
-          </div>
+              <p class="sq-project-caption">
+                {project.title}
+                {project.year ? `, ${project.year}` : ''}
+              </p>
+            </a>
+          </article>
         ))
       }
     </section>
 
-    <!-- 手机版：两列瀑布流 -->
+    <!-- 手机版：两列，保持图片原始比例 -->
     <section
-      class="sq-masonry sq-masonry-mobile"
+      class="sq-mobile-columns"
       aria-label="Projects"
     >
       {
-        mobileColumns.map((column) => (
-          <div class="sq-masonry-column">
-            {
-              column.map((project) => (
-                <article class="sq-work-item">
-                  <a
-                    class="sq-work-link"
-                    href={`/projects/${project.slug}/`}
-                  >
-                    <img
-                      class="sq-work-cover"
-                      src={project.cover}
-                      alt={project.title}
-                      loading="lazy"
-                    />
+        projects.map((project) => (
+          <article class="sq-mobile-item">
+            <a
+              class="sq-project-link"
+              href={`/projects/${project.slug}/`}
+            >
+              <img
+                class="sq-mobile-cover"
+                src={project.cover}
+                alt={project.title}
+                loading="lazy"
+              />
 
-                    <p class="sq-work-caption">
-                      {project.title}
-                      {project.year ? `, ${project.year}` : ''}
-                    </p>
-                  </a>
-                </article>
-              ))
-            }
-          </div>
+              <p class="sq-mobile-caption">
+                {project.title}
+                {project.year ? `, ${project.year}` : ''}
+              </p>
+            </a>
+          </article>
         ))
       }
     </section>
 
-  </main>
+  </div>
 </BaseLayout>
 
 <style>
@@ -123,18 +100,14 @@ projects.forEach((project, index) => {
     color: #111111;
   }
 
-  :global(body.sq-works-page) {
+  :global(body.sq-works-body) {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 12px;
     font-weight: 400;
     line-height: 1.25;
   }
 
-  /*
-    BaseLayout 目前仍然包含 Skip to content。
-    在 Works 页面将其隐藏，避免左上角再次出现。
-  */
-  :global(body.sq-works-page .skip-link) {
+  :global(body.sq-works-body .skip-link) {
     position: fixed;
     top: -1000px;
     left: -1000px;
@@ -143,12 +116,12 @@ projects.forEach((project, index) => {
     overflow: hidden;
   }
 
-  .sq-works-layout {
+  .sq-works-page {
     min-height: 100svh;
     background: #ffffff;
   }
 
-  /* ---------- DESKTOP SIDEBAR ---------- */
+  /* ---------- 左侧导航 ---------- */
 
   .sq-works-sidebar {
     position: fixed;
@@ -168,15 +141,15 @@ projects.forEach((project, index) => {
 
   .sq-works-name,
   .sq-works-sidebar a,
-  .sq-work-link {
+  .sq-project-link {
     color: #111111;
     text-decoration: none;
   }
 
   .sq-works-name:hover,
   .sq-works-sidebar a:hover,
-  .sq-work-link:hover {
-    opacity: 0.55;
+  .sq-project-link:hover {
+    opacity: 0.52;
   }
 
   .sq-works-sidebar-bottom nav {
@@ -190,58 +163,76 @@ projects.forEach((project, index) => {
     margin: 0;
   }
 
-  /* ---------- MASONRY ---------- */
+  /* ---------- 电脑端 ---------- */
 
-  .sq-masonry {
-    box-sizing: border-box;
-  }
-
-  .sq-masonry-desktop {
+  .sq-desktop-grid {
     margin-left: 180px;
-    padding: 34px 54px 130px 38px;
-    display: flex;
-    align-items: flex-start;
-    gap: clamp(40px, 4.5vw, 76px);
+    padding: 30px 46px 130px 34px;
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: clamp(34px, 4vw, 68px);
+    row-gap: 82px;
+    align-items: start;
   }
 
-  .sq-masonry-mobile {
-    display: none;
-  }
-
-  .sq-masonry-column {
-    flex: 1 1 0;
+  .sq-desktop-item {
     min-width: 0;
-  }
-
-  .sq-work-item {
     width: 100%;
-    margin: 0 0 clamp(80px, 9vw, 135px);
   }
 
-  .sq-work-link {
-    display: block;
-  }
-
-  .sq-work-cover {
-    display: block;
+  /*
+    所有项目使用相同高度的隐形白色画框。
+    图片使用 contain，因此绝对不会被裁切。
+  */
+  .sq-desktop-frame {
     width: 100%;
+    height: clamp(320px, 32vw, 500px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: #ffffff;
+  }
+
+  .sq-desktop-frame img {
+    display: block;
+    width: auto;
     height: auto;
+    max-width: 100%;
+    max-height: 100%;
     object-fit: contain;
   }
 
-  .sq-work-caption {
-    margin: 7px 0 0;
+  .sq-project-caption {
+    margin: 8px 0 0;
     text-align: left;
   }
 
-  /* ---------- MOBILE ---------- */
+  .sq-mobile-columns {
+    display: none;
+  }
+
+  /* ---------- 中等电脑 / 平板 ---------- */
+
+  @media (max-width: 1050px) and (min-width: 701px) {
+    .sq-desktop-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .sq-desktop-frame {
+      height: clamp(340px, 46vw, 520px);
+    }
+  }
+
+  /* ---------- 手机版：保持现有两列感觉 ---------- */
 
   @media (max-width: 700px) {
     .sq-works-sidebar {
       position: relative;
       width: 100%;
-      height: 86px;
-      min-height: 86px;
+      height: 118px;
+      min-height: 118px;
       padding: 12px;
       display: block;
     }
@@ -254,58 +245,60 @@ projects.forEach((project, index) => {
 
     .sq-works-sidebar-bottom {
       position: absolute;
-      top: 12px;
-      right: 12px;
-      left: auto;
-      display: flex;
-      align-items: baseline;
-      gap: 10px;
+      top: 52px;
+      left: 12px;
       margin: 0;
     }
 
     .sq-works-sidebar-bottom nav {
-      display: flex;
-      flex-direction: row;
-      align-items: baseline;
-      gap: 4px;
       margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
     }
 
     .sq-works-sidebar-bottom p {
+      position: fixed;
+      bottom: 12px;
+      left: 12px;
+      z-index: 30;
       margin: 0;
-      white-space: nowrap;
+      padding-right: 5px;
+      background: rgba(255, 255, 255, 0.96);
+      font-size: 10px;
     }
 
-    .sq-masonry-desktop {
+    .sq-desktop-grid {
       display: none;
     }
 
-    .sq-masonry-mobile {
+    .sq-mobile-columns {
+      display: block;
       width: 100%;
       margin: 0;
-      padding: 14px 20px 80px;
-      display: flex;
-      align-items: flex-start;
-      gap: 22px;
+      padding: 18px 16px 80px;
+      box-sizing: border-box;
+      column-count: 2;
+      column-gap: 20px;
     }
 
-    .sq-masonry-column {
-      width: calc(50% - 11px);
-      flex: 0 0 calc(50% - 11px);
+    .sq-mobile-item {
+      display: inline-block;
+      width: 100%;
+      margin: 0 0 52px;
+      break-inside: avoid;
+      vertical-align: top;
     }
 
-    .sq-work-item {
-      margin-bottom: 56px;
-    }
-
-    .sq-work-cover {
+    .sq-mobile-cover {
+      display: block;
       width: 100%;
       height: auto;
       object-fit: contain;
     }
 
-    .sq-work-caption {
-      margin-top: 7px;
+    .sq-mobile-caption {
+      margin: 7px 0 0;
       text-align: center;
       font-size: 11px;
       line-height: 1.2;

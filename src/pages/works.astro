@@ -6,11 +6,13 @@ import site from '../data/site.json';
 const projects = getProjects();
 const year = new Date().getFullYear();
 
-const desktopColumns = [[], [], []];
+/*
+  手机版保持两列瀑布流：
+  1 左、2 右、3 左、4 右……
+*/
 const mobileColumns = [[], []];
 
 projects.forEach((project, index) => {
-  desktopColumns[index % 3].push(project);
   mobileColumns[index % 2].push(project);
 });
 ---
@@ -39,67 +41,61 @@ projects.forEach((project, index) => {
       </div>
     </aside>
 
-    <!-- 电脑版：三列瀑布流 -->
+    <!-- 电脑端：普通三列网格 -->
     <section
-      class="sq-masonry sq-masonry-desktop"
+      class="sq-desktop-grid"
       aria-label="Projects"
     >
       {
-        desktopColumns.map((column) => (
-          <div class="sq-masonry-column">
-            {
-              column.map((project) => (
-                <article class="sq-work-item">
-                  <a
-                    class="sq-work-link"
-                    href={`/projects/${project.slug}/`}
-                  >
-                    <figure class="sq-work-figure">
-                      <img
-                        class="sq-work-cover"
-                        src={project.cover}
-                        alt={project.title}
-                        loading="lazy"
-                      />
+        projects.map((project) => (
+          <article class="sq-desktop-item">
+            <a
+              class="sq-work-link"
+              href={`/projects/${project.slug}/`}
+            >
+              <figure class="sq-desktop-figure">
+                <img
+                  class="sq-desktop-cover"
+                  src={project.cover}
+                  alt={project.title}
+                  loading="lazy"
+                />
 
-                      <figcaption class="sq-work-caption">
-                        {project.title}
-                        {project.year ? `, ${project.year}` : ''}
-                      </figcaption>
-                    </figure>
-                  </a>
-                </article>
-              ))
-            }
-          </div>
+                <figcaption class="sq-desktop-caption">
+                  {project.title}
+                  {project.year ? `, ${project.year}` : ''}
+                </figcaption>
+              </figure>
+            </a>
+          </article>
         ))
       }
     </section>
 
-    <!-- 手机版：两列独立排列 -->
+    <!-- 手机版：保持现在的两列瀑布流 -->
     <section
-      class="sq-masonry sq-masonry-mobile"
+      class="sq-mobile-masonry"
       aria-label="Projects"
     >
       {
         mobileColumns.map((column) => (
-          <div class="sq-masonry-column">
+          <div class="sq-mobile-column">
             {
               column.map((project) => (
-                <article class="sq-work-item">
+                <article class="sq-mobile-item">
                   <a
                     class="sq-work-link"
                     href={`/projects/${project.slug}/`}
                   >
-                    <figure class="sq-work-figure">
+                    <figure class="sq-mobile-figure">
                       <img
-                        class="sq-work-cover"
+                        class="sq-mobile-cover"
                         src={project.cover}
                         alt={project.title}
                         loading="lazy"
                       />
 
-                      <figcaption class="sq-work-caption">
+                      <figcaption class="sq-mobile-caption">
                         {project.title}
                         {project.year ? `, ${project.year}` : ''}
                       </figcaption>
@@ -113,7 +109,6 @@ projects.forEach((project, index) => {
       }
     </section>
 
-    <!-- 手机版版权：正常放在全部项目后面 -->
     <p class="sq-mobile-copyright">
       © {year}
     </p>
@@ -197,40 +192,66 @@ projects.forEach((project, index) => {
     display: none;
   }
 
-  /* ---------- 通用图片 ---------- */
+  /* ---------- 电脑端三列 ---------- */
 
-  .sq-masonry {
+  .sq-desktop-grid {
+    margin-left: 180px;
+    padding: 34px 52px 130px 38px;
     box-sizing: border-box;
+
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+
+    column-gap: clamp(42px, 5vw, 82px);
+    row-gap: clamp(74px, 8vw, 120px);
+
+    align-items: start;
   }
 
-  .sq-masonry-column {
-    flex: 1 1 0;
+  .sq-desktop-item {
+    width: 100%;
     min-width: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
   }
 
-  .sq-work-item {
+  .sq-desktop-item .sq-work-link {
+    display: flex;
     width: 100%;
+    justify-content: center;
   }
 
-  .sq-work-link,
-  .sq-work-figure {
-    display: block;
-    width: 100%;
-  }
-
-  .sq-work-figure {
+  /*
+    Figure 按照图片实际宽度收缩。
+    标题因此会和图片左边缘对齐，
+    而不是和整列左边缘对齐。
+  */
+  .sq-desktop-figure {
+    display: flex;
+    width: fit-content;
+    max-width: 100%;
     margin: 0;
     padding: 0;
+
+    flex-direction: column;
+    align-items: flex-start;
   }
 
-  .sq-work-cover {
+  .sq-desktop-cover {
     display: block;
-    width: 100%;
+
+    width: auto;
+    max-width: 100%;
+
     height: auto;
+    max-height: 68svh;
+
     object-fit: contain;
   }
 
-  .sq-work-caption {
+  .sq-desktop-caption {
     display: block;
     width: 100%;
     margin: 7px 0 0;
@@ -238,34 +259,23 @@ projects.forEach((project, index) => {
     text-align: left;
   }
 
-  /* ---------- 电脑版 ---------- */
-
-  .sq-masonry-desktop {
-    margin-left: 180px;
-    padding: 34px 52px 120px 38px;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    gap: clamp(40px, 4.5vw, 72px);
-  }
-
-  .sq-masonry-desktop .sq-masonry-column {
-    max-width: 390px;
-  }
-
-  .sq-masonry-desktop .sq-work-item {
-    margin: 0 0 clamp(58px, 6vw, 90px);
-  }
-
-  .sq-masonry-mobile {
-    display: none;
-  }
+  /* 中等尺寸电脑和平板横屏 */
 
   @media (max-width: 1050px) and (min-width: 701px) {
-    .sq-masonry-desktop {
-      gap: 34px;
-      padding-right: 34px;
+    .sq-desktop-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: 44px;
     }
+
+    .sq-desktop-cover {
+      max-height: 72svh;
+    }
+  }
+
+  /* ---------- 手机版默认隐藏 ---------- */
+
+  .sq-mobile-masonry {
+    display: none;
   }
 
   /* ---------- 手机版 ---------- */
@@ -304,32 +314,56 @@ projects.forEach((project, index) => {
       display: none;
     }
 
-    .sq-masonry-desktop {
+    .sq-desktop-grid {
       display: none;
     }
 
-    .sq-masonry-mobile {
+    /*
+      保留你目前满意的手机版：
+      两列独立排列、图片不裁剪、减少大块空白。
+    */
+    .sq-mobile-masonry {
       display: flex;
       width: 100%;
       margin: 0;
       padding: 18px 16px 36px;
       box-sizing: border-box;
+
       align-items: flex-start;
       gap: 20px;
     }
 
-    .sq-masonry-mobile .sq-masonry-column {
+    .sq-mobile-column {
       width: calc(50% - 10px);
-      max-width: none;
+      min-width: 0;
       flex: 0 0 calc(50% - 10px);
     }
 
-    .sq-masonry-mobile .sq-work-item {
+    .sq-mobile-item {
+      width: 100%;
       margin: 0 0 42px;
     }
 
-    .sq-masonry-mobile .sq-work-caption {
-      margin-top: 7px;
+    .sq-mobile-figure {
+      display: block;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    .sq-mobile-cover {
+      display: block;
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+    }
+
+    .sq-mobile-caption {
+      display: block;
+      width: 100%;
+      margin: 7px 0 0;
+      padding: 0;
+
       text-align: left;
       font-size: 11px;
       line-height: 1.2;
@@ -338,8 +372,11 @@ projects.forEach((project, index) => {
     .sq-mobile-copyright {
       display: block;
       margin: 0;
-      padding: 0 16px
+      padding:
+        0
+        16px
         calc(18px + env(safe-area-inset-bottom));
+
       font-size: 10px;
     }
   }

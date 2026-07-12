@@ -157,10 +157,10 @@ content:
     filename: "{fields.slug}.json"
     view:
       primary: title
-      fields: [title, year, published]
-      sort: [title, year]
+      fields: [title, year, published, order]
+      sort: [order, title, year]
       default:
-        sort: title
+        sort: order
         order: asc
     fields:
       - name: title
@@ -186,9 +186,9 @@ content:
         default: true
 
       - name: order
-        label: Legacy display order
+        label: Display order
         type: number
-        hidden: true
+        required: true
 
       - name: cover
         label: Cover image
@@ -225,20 +225,3 @@ content:
           - name: name
             label: Name
             type: string
-
-  - name: project_order
-    label: Project order
-    type: file
-    path: src/data/project-order.json
-    format: json
-    list: true
-    fields:
-      - name: project
-        label: Project
-        type: reference
-        required: true
-        options:
-          collection: projects
-          search: "title,slug,year"
-          value: "{path}"
-          label: "{title}, {year}"

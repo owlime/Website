@@ -6,11 +6,6 @@ import site from '../data/site.json';
 const projects = getProjects();
 const year = new Date().getFullYear();
 
-/*
-  按 CMS 的 Display order 分配到各列：
-  电脑版：1 左、2 中、3 右、4 左……
-  手机版：1 左、2 右、3 左、4 右……
-*/
 const desktopColumns = [[], [], []];
 const mobileColumns = [[], []];
 
@@ -38,7 +33,9 @@ projects.forEach((project, index) => {
           <a href="/information/">Information.</a>
         </nav>
 
-        <p>© {year}</p>
+        <p class="sq-desktop-copyright">
+          © {year}
+        </p>
       </div>
     </aside>
 
@@ -79,7 +76,7 @@ projects.forEach((project, index) => {
       }
     </section>
 
-    <!-- 手机版：两列独立瀑布流 -->
+    <!-- 手机版：两列独立排列 -->
     <section
       class="sq-masonry sq-masonry-mobile"
       aria-label="Projects"
@@ -115,6 +112,11 @@ projects.forEach((project, index) => {
         ))
       }
     </section>
+
+    <!-- 手机版版权：正常放在全部项目后面 -->
+    <p class="sq-mobile-copyright">
+      © {year}
+    </p>
 
   </div>
 </BaseLayout>
@@ -187,11 +189,15 @@ projects.forEach((project, index) => {
     margin: 0 0 28px;
   }
 
-  .sq-works-sidebar-bottom p {
+  .sq-desktop-copyright {
     margin: 0;
   }
 
-  /* ---------- 通用瀑布流 ---------- */
+  .sq-mobile-copyright {
+    display: none;
+  }
+
+  /* ---------- 通用图片 ---------- */
 
   .sq-masonry {
     box-sizing: border-box;
@@ -294,15 +300,8 @@ projects.forEach((project, index) => {
       margin: 0;
     }
 
-    .sq-works-sidebar-bottom p {
-      position: fixed;
-      bottom: calc(12px + env(safe-area-inset-bottom));
-      left: 12px;
-      z-index: 50;
-      margin: 0;
-      padding-right: 6px;
-      background: rgba(255, 255, 255, 0.96);
-      font-size: 10px;
+    .sq-desktop-copyright {
+      display: none;
     }
 
     .sq-masonry-desktop {
@@ -313,7 +312,8 @@ projects.forEach((project, index) => {
       display: flex;
       width: 100%;
       margin: 0;
-      padding: 18px 16px 100px;
+      padding: 18px 16px 36px;
+      box-sizing: border-box;
       align-items: flex-start;
       gap: 20px;
     }
@@ -333,6 +333,14 @@ projects.forEach((project, index) => {
       text-align: left;
       font-size: 11px;
       line-height: 1.2;
+    }
+
+    .sq-mobile-copyright {
+      display: block;
+      margin: 0;
+      padding: 0 16px
+        calc(18px + env(safe-area-inset-bottom));
+      font-size: 10px;
     }
   }
 </style>

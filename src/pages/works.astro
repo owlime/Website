@@ -7,8 +7,9 @@ const projects = getProjects();
 const year = new Date().getFullYear();
 
 /*
-  手机版保持两列独立排列：
-  1 左、2 右、3 左、4 右……
+  手机版使用两列独立排列：
+  第 1、3、5、7 个项目在左列；
+  第 2、4、6、8 个项目在右列。
 */
 const mobileColumns = [[], []];
 
@@ -41,7 +42,7 @@ projects.forEach((project, index) => {
       </div>
     </aside>
 
-    <!-- 电脑端：三列正常顺序 -->
+    <!-- 电脑版：三列整齐网格 -->
     <section
       class="sq-desktop-grid"
       aria-label="Projects"
@@ -53,13 +54,16 @@ projects.forEach((project, index) => {
               class="sq-work-link"
               href={`/projects/${project.slug}/`}
             >
-              <figure class="sq-desktop-figure">
-                <img
-                  class="sq-desktop-cover"
-                  src={project.cover}
-                  alt={project.title}
-                  loading="lazy"
-                />
+              <figure class="sq-desktop-figure is-portrait">
+                <div class="sq-desktop-media">
+                  <img
+                    class="sq-desktop-cover"
+                    src={project.cover}
+                    alt={project.title}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
 
                 <figcaption class="sq-desktop-caption">
                   {project.title}
@@ -72,7 +76,7 @@ projects.forEach((project, index) => {
       }
     </section>
 
-    <!-- 手机版：保持当前两列效果 -->
+    <!-- 手机版：保持两列瀑布效果 -->
     <section
       class="sq-mobile-masonry"
       aria-label="Projects"
@@ -93,6 +97,7 @@ projects.forEach((project, index) => {
                         src={project.cover}
                         alt={project.title}
                         loading="lazy"
+                        decoding="async"
                       />
 
                       <figcaption class="sq-mobile-caption">
@@ -115,11 +120,12 @@ projects.forEach((project, index) => {
 
   </div>
 
+  <!-- 自动判断电脑端图片是横图、竖图还是方图 -->
   <script>
     const desktopImages =
       document.querySelectorAll('.sq-desktop-cover');
 
-    const setImageOrientation = (image) => {
+    const setOrientation = (image) => {
       if (!(image instanceof HTMLImageElement)) return;
 
       const figure = image.closest('.sq-desktop-figure');
@@ -134,13 +140,16 @@ projects.forEach((project, index) => {
       const width = image.naturalWidth;
       const height = image.naturalHeight;
 
-      if (!width || !height) return;
+      if (!width || !height) {
+        figure.classList.add('is-portrait');
+        return;
+      }
 
       const ratio = width / height;
 
-      if (ratio > 1.12) {
+      if (ratio >= 1.15) {
         figure.classList.add('is-landscape');
-      } else if (ratio < 0.88) {
+      } else if (ratio <= 0.88) {
         figure.classList.add('is-portrait');
       } else {
         figure.classList.add('is-square');
@@ -151,11 +160,11 @@ projects.forEach((project, index) => {
       if (!(image instanceof HTMLImageElement)) return;
 
       if (image.complete && image.naturalWidth) {
-        setImageOrientation(image);
+        setOrientation(image);
       } else {
         image.addEventListener(
           'load',
-          () => setImageOrientation(image),
+          () => setOrientation(image),
           { once: true }
         );
       }
@@ -193,7 +202,9 @@ projects.forEach((project, index) => {
     background: #ffffff;
   }
 
-  /* ---------- 左侧导航 ---------- */
+  /* ========================================
+     左侧导航
+  ======================================== */
 
   .sq-works-sidebar {
     position: fixed;
@@ -242,18 +253,20 @@ projects.forEach((project, index) => {
     display: none;
   }
 
-  /* ---------- 电脑端三列 ---------- */
+  /* ========================================
+     电脑端：三列网格
+  ======================================== */
 
   .sq-desktop-grid {
     margin-left: 180px;
-    padding: 24px 48px 120px 36px;
+    padding: 22px 38px 110px 34px;
     box-sizing: border-box;
 
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
 
-    column-gap: clamp(36px, 4vw, 64px);
-    row-gap: clamp(50px, 5vw, 76px);
+    column-gap: clamp(28px, 3vw, 46px);
+    row-gap: 44px;
 
     align-items: start;
   }
@@ -261,73 +274,98 @@ projects.forEach((project, index) => {
   .sq-desktop-item {
     width: 100%;
     min-width: 0;
-
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
+    display: block;
   }
 
   .sq-desktop-item .sq-work-link {
-    display: flex;
+    display: block;
     width: 100%;
-    justify-content: center;
   }
 
   /*
-    默认先按竖图宽度显示。
-    图片加载后，JavaScript 会自动判断方向。
+    所有图片都和所在列的左侧对齐。
+    Figure 的宽度会跟随图片类型改变。
   */
   .sq-desktop-figure {
-    display: flex;
-    width: 68%;
+    display: inline-flex;
     max-width: 100%;
     margin: 0;
     padding: 0;
 
     flex-direction: column;
     align-items: flex-start;
+    vertical-align: top;
   }
 
-  /*
-    横图占满整列。
-    这样横图的视觉高度会明显增大。
-  */
-  .sq-desktop-figure.is-landscape {
-    width: 100%;
-  }
-
-  /*
-    方图在横图与竖图之间。
-  */
-  .sq-desktop-figure.is-square {
-    width: 82%;
-  }
-
-  /*
-    竖图使用约三分之二列宽。
-    这样不会比横图大得过分。
-  */
-  .sq-desktop-figure.is-portrait {
-    width: 68%;
+  .sq-desktop-media {
+    display: flex;
+    max-width: 100%;
+    align-items: flex-start;
+    justify-content: flex-start;
   }
 
   .sq-desktop-cover {
     display: block;
-    width: 100%;
-    height: auto;
     object-fit: contain;
   }
 
-  .sq-desktop-figure.is-landscape .sq-desktop-cover {
-    max-height: 39svh;
+  /*
+    竖图：
+    所有竖图使用同一个高度。
+    宽度根据原图比例自动变化，因此不会裁图。
+  */
+  .sq-desktop-figure.is-portrait {
+    width: fit-content;
   }
 
-  .sq-desktop-figure.is-square .sq-desktop-cover {
-    max-height: 48svh;
+  .sq-desktop-figure.is-portrait .sq-desktop-media {
+    height: clamp(340px, 42svh, 460px);
   }
 
   .sq-desktop-figure.is-portrait .sq-desktop-cover {
-    max-height: 58svh;
+    width: auto;
+    height: 100%;
+    max-width: 100%;
+  }
+
+  /*
+    横图：
+    使用完整列宽。
+
+    三列布局下，横图自然高度大约是统一竖图高度的
+    60%–70%，接近你要求的三分之二。
+  */
+  .sq-desktop-figure.is-landscape {
+    display: flex;
+    width: 100%;
+  }
+
+  .sq-desktop-figure.is-landscape .sq-desktop-media {
+    width: 100%;
+    height: auto;
+  }
+
+  .sq-desktop-figure.is-landscape .sq-desktop-cover {
+    width: 100%;
+    height: auto;
+  }
+
+  /*
+    接近方形的图片：
+    大小介于横图与竖图之间。
+  */
+  .sq-desktop-figure.is-square {
+    display: flex;
+    width: 84%;
+  }
+
+  .sq-desktop-figure.is-square .sq-desktop-media {
+    width: 100%;
+  }
+
+  .sq-desktop-figure.is-square .sq-desktop-cover {
+    width: 100%;
+    height: auto;
   }
 
   .sq-desktop-caption {
@@ -338,42 +376,41 @@ projects.forEach((project, index) => {
     text-align: left;
   }
 
-  /* 中等屏幕 */
+  /* 中等尺寸电脑和平板横屏 */
 
   @media (max-width: 1050px) and (min-width: 701px) {
     .sq-desktop-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      column-gap: 42px;
+      column-gap: 38px;
+      padding-right: 32px;
     }
 
-    .sq-desktop-figure.is-landscape {
-      width: 100%;
-    }
-
-    .sq-desktop-figure.is-square {
-      width: 80%;
-    }
-
-    .sq-desktop-figure.is-portrait {
-      width: 66%;
+    .sq-desktop-figure.is-portrait .sq-desktop-media {
+      height: clamp(350px, 48svh, 490px);
     }
   }
 
-  /* ---------- 手机版默认隐藏 ---------- */
+  /* ========================================
+     手机版默认隐藏
+  ======================================== */
 
   .sq-mobile-masonry {
     display: none;
   }
 
-  /* ---------- 手机版：保持原样 ---------- */
+  /* ========================================
+     手机版：保持当前排版
+  ======================================== */
 
   @media (max-width: 700px) {
     .sq-works-sidebar {
       position: relative;
+
       width: 100%;
       height: 118px;
       min-height: 118px;
       padding: 12px;
+
       display: block;
     }
 
@@ -407,6 +444,7 @@ projects.forEach((project, index) => {
 
     .sq-mobile-masonry {
       display: flex;
+
       width: 100%;
       margin: 0;
       padding: 18px 16px 36px;
@@ -461,59 +499,6 @@ projects.forEach((project, index) => {
         calc(18px + env(safe-area-inset-bottom));
 
       font-size: 10px;
-    }
-  }  /* Desktop spacing and consistent image rhythm */
-  @media (min-width: 701px) {
-    .sq-desktop-grid {
-      column-gap: clamp(28px, 3vw, 46px);
-      row-gap: 30px;
-      padding-top: 22px;
-      padding-right: 38px;
-    }
-
-    .sq-desktop-figure {
-      display: grid;
-      grid-template-rows: 52svh auto;
-      align-items: end;
-    }
-
-    .sq-desktop-cover {
-      align-self: end;
-    }
-
-    .sq-desktop-figure.is-landscape .sq-desktop-cover {
-      max-height: 35svh;
-    }
-
-    .sq-desktop-figure.is-square .sq-desktop-cover {
-      max-height: 44svh;
-    }
-
-    .sq-desktop-figure.is-portrait .sq-desktop-cover {
-      max-height: 52svh;
-    }
-
-    .sq-desktop-caption {
-      align-self: start;
-      margin-top: 7px;
-    }
-  }  /* Desktop: align every image and caption to its column's left edge */
-  @media (min-width: 701px) {
-    .sq-desktop-item {
-      justify-content: flex-start;
-    }
-
-    .sq-desktop-item .sq-work-link {
-      justify-content: flex-start;
-    }
-
-    .sq-desktop-figure {
-      margin-left: 0;
-      margin-right: auto;
-    }
-
-    .sq-desktop-caption {
-      text-align: left;
     }
   }
 </style>

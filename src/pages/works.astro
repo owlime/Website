@@ -497,5 +497,23 @@ projects.forEach((project, index) => {
       align-self: start;
       margin-top: 7px;
     }
+  }  /* Desktop: align every image and caption to its column's left edge */
+  @media (min-width: 701px) {
+    .sq-desktop-item {
+      justify-content: flex-start;
+    }
+
+    .sq-desktop-item .sq-work-link {
+      justify-content: flex-start;
+    }
+
+    .sq-desktop-figure {
+      margin-left: 0;
+      margin-right: auto;
+    }
+
+    .sq-desktop-caption {
+      text-align: left;
+    }
   }
 </style>

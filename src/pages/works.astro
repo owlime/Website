@@ -7,9 +7,9 @@ const projects = getProjects();
 const year = new Date().getFullYear();
 
 /*
-  手机版使用两列独立排列：
-  第 1、3、5、7 个项目在左列；
-  第 2、4、6、8 个项目在右列。
+  手机版：
+  第 1、3、5、7 个项目进入左列；
+  第 2、4、6、8 个项目进入右列。
 */
 const mobileColumns = [[], []];
 
@@ -42,7 +42,7 @@ projects.forEach((project, index) => {
       </div>
     </aside>
 
-    <!-- 电脑版：三列整齐网格 -->
+    <!-- 电脑端：三列 -->
     <section
       class="sq-desktop-grid"
       aria-label="Projects"
@@ -55,15 +55,13 @@ projects.forEach((project, index) => {
               href={`/projects/${project.slug}/`}
             >
               <figure class="sq-desktop-figure is-portrait">
-                <div class="sq-desktop-media">
-                  <img
-                    class="sq-desktop-cover"
-                    src={project.cover}
-                    alt={project.title}
-                    loading="lazy"
-                    decoding="async"
-                  />
-                </div>
+                <img
+                  class="sq-desktop-cover"
+                  src={project.cover}
+                  alt={project.title}
+                  loading="lazy"
+                  decoding="async"
+                />
 
                 <figcaption class="sq-desktop-caption">
                   {project.title}
@@ -76,7 +74,7 @@ projects.forEach((project, index) => {
       }
     </section>
 
-    <!-- 手机版：保持两列瀑布效果 -->
+    <!-- 手机版：两列独立排列 -->
     <section
       class="sq-mobile-masonry"
       aria-label="Projects"
@@ -120,7 +118,7 @@ projects.forEach((project, index) => {
 
   </div>
 
-  <!-- 自动判断电脑端图片是横图、竖图还是方图 -->
+  <!-- 自动判断电脑端图片方向 -->
   <script>
     const desktopImages =
       document.querySelectorAll('.sq-desktop-cover');
@@ -254,19 +252,19 @@ projects.forEach((project, index) => {
   }
 
   /* ========================================
-     电脑端：三列网格
+     电脑端：三列
   ======================================== */
 
   .sq-desktop-grid {
     margin-left: 180px;
-    padding: 22px 38px 110px 34px;
+    padding: 24px 44px 110px 34px;
     box-sizing: border-box;
 
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
 
-    column-gap: clamp(28px, 3vw, 46px);
-    row-gap: 44px;
+    column-gap: clamp(34px, 4vw, 66px);
+    row-gap: 58px;
 
     align-items: start;
   }
@@ -274,7 +272,6 @@ projects.forEach((project, index) => {
   .sq-desktop-item {
     width: 100%;
     min-width: 0;
-    display: block;
   }
 
   .sq-desktop-item .sq-work-link {
@@ -283,91 +280,95 @@ projects.forEach((project, index) => {
   }
 
   /*
-    所有图片都和所在列的左侧对齐。
-    Figure 的宽度会跟随图片类型改变。
+    每个 Figure 的宽度跟随图片类型。
+    第一列靠左，第二列居中，第三列靠右。
   */
   .sq-desktop-figure {
-    display: inline-flex;
+    display: flex;
+    width: fit-content;
     max-width: 100%;
     margin: 0;
     padding: 0;
 
     flex-direction: column;
     align-items: flex-start;
-    vertical-align: top;
   }
 
-  .sq-desktop-media {
-    display: flex;
-    max-width: 100%;
-    align-items: flex-start;
-    justify-content: flex-start;
+  /*
+    第一列：靠左
+  */
+  .sq-desktop-item:nth-child(3n + 1)
+  .sq-desktop-figure {
+    margin-left: 0;
+    margin-right: auto;
+  }
+
+  /*
+    第二列：居中
+  */
+  .sq-desktop-item:nth-child(3n + 2)
+  .sq-desktop-figure {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /*
+    第三列：靠右
+  */
+  .sq-desktop-item:nth-child(3n + 3)
+  .sq-desktop-figure {
+    margin-left: auto;
+    margin-right: 0;
   }
 
   .sq-desktop-cover {
     display: block;
+    max-width: 100%;
     object-fit: contain;
   }
 
   /*
-    竖图：
-    所有竖图使用同一个高度。
-    宽度根据原图比例自动变化，因此不会裁图。
+    竖图统一高度，不裁剪。
+    原图比例不同，所以宽度可以略有不同。
   */
-  .sq-desktop-figure.is-portrait {
-    width: fit-content;
-  }
-
-  .sq-desktop-figure.is-portrait .sq-desktop-media {
-    height: clamp(340px, 42svh, 460px);
-  }
-
-  .sq-desktop-figure.is-portrait .sq-desktop-cover {
+  .sq-desktop-figure.is-portrait
+  .sq-desktop-cover {
     width: auto;
-    height: 100%;
-    max-width: 100%;
+    height: clamp(350px, 46svh, 500px);
+    max-height: 500px;
   }
 
   /*
-    横图：
-    使用完整列宽。
-
-    三列布局下，横图自然高度大约是统一竖图高度的
-    60%–70%，接近你要求的三分之二。
+    横图占满整列宽度。
+    高度自然产生，通常约为竖图的 2/3。
   */
   .sq-desktop-figure.is-landscape {
-    display: flex;
     width: 100%;
   }
 
-  .sq-desktop-figure.is-landscape .sq-desktop-media {
-    width: 100%;
-    height: auto;
-  }
-
-  .sq-desktop-figure.is-landscape .sq-desktop-cover {
+  .sq-desktop-figure.is-landscape
+  .sq-desktop-cover {
     width: 100%;
     height: auto;
   }
 
   /*
-    接近方形的图片：
-    大小介于横图与竖图之间。
+    方图比横图稍窄。
   */
   .sq-desktop-figure.is-square {
-    display: flex;
-    width: 84%;
+    width: 82%;
   }
 
-  .sq-desktop-figure.is-square .sq-desktop-media {
-    width: 100%;
-  }
-
-  .sq-desktop-figure.is-square .sq-desktop-cover {
+  .sq-desktop-figure.is-square
+  .sq-desktop-cover {
     width: 100%;
     height: auto;
   }
 
+  /*
+    标题永远与自己的图片左边缘对齐。
+    中间列只是整体居中，标题本身不居中。
+  */
   .sq-desktop-caption {
     display: block;
     width: 100%;
@@ -376,17 +377,32 @@ projects.forEach((project, index) => {
     text-align: left;
   }
 
-  /* 中等尺寸电脑和平板横屏 */
-
+  /*
+    中等宽度电脑和平板横屏：
+    改为两列。
+  */
   @media (max-width: 1050px) and (min-width: 701px) {
     .sq-desktop-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      column-gap: 38px;
-      padding-right: 32px;
+      column-gap: 42px;
+      padding-right: 34px;
     }
 
-    .sq-desktop-figure.is-portrait .sq-desktop-media {
-      height: clamp(350px, 48svh, 490px);
+    .sq-desktop-item:nth-child(odd)
+    .sq-desktop-figure {
+      margin-left: 0;
+      margin-right: auto;
+    }
+
+    .sq-desktop-item:nth-child(even)
+    .sq-desktop-figure {
+      margin-left: auto;
+      margin-right: 0;
+    }
+
+    .sq-desktop-figure.is-portrait
+    .sq-desktop-cover {
+      height: clamp(360px, 50svh, 510px);
     }
   }
 

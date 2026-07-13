@@ -462,5 +462,40 @@ projects.forEach((project, index) => {
 
       font-size: 10px;
     }
+  }  /* Desktop spacing and consistent image rhythm */
+  @media (min-width: 701px) {
+    .sq-desktop-grid {
+      column-gap: clamp(28px, 3vw, 46px);
+      row-gap: 30px;
+      padding-top: 22px;
+      padding-right: 38px;
+    }
+
+    .sq-desktop-figure {
+      display: grid;
+      grid-template-rows: 52svh auto;
+      align-items: end;
+    }
+
+    .sq-desktop-cover {
+      align-self: end;
+    }
+
+    .sq-desktop-figure.is-landscape .sq-desktop-cover {
+      max-height: 35svh;
+    }
+
+    .sq-desktop-figure.is-square .sq-desktop-cover {
+      max-height: 44svh;
+    }
+
+    .sq-desktop-figure.is-portrait .sq-desktop-cover {
+      max-height: 52svh;
+    }
+
+    .sq-desktop-caption {
+      align-self: start;
+      margin-top: 7px;
+    }
   }
 </style>

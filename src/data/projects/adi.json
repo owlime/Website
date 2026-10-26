@@ -1,6 +1,6 @@
 {
   "title": "Adi Vol II",
-  "slug": "adi",
+  "slug": "adi2",
   "year": "2026",
   "published": true,
   "order": 6,
@@ -17,10 +17,6 @@
     {
       "role": "Photography",
       "name": "Eva Chi"
-    },
-    {
-      "role": "Hair & Makeup",
-      "name": "Xinyi Shao"
     }
   ]
 }

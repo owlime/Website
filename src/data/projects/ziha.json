@@ -1,13 +1,12 @@
 {
-  "title": "Ziha Vol.I",
+  "title": "Ziha",
   "slug": "ziha",
   "year": "2026",
   "published": true,
   "order": 5,
-  "cover": "/uploads/screenshot-2026-10-26-at-195515.png",
+  "cover": "/uploads/screenshot-2026-10-26-at-202704.png",
   "gallery": [
     "/uploads/screenshot-2026-10-26-at-195225-1.png",
-    "/uploads/screenshot-2026-10-26-at-195656.png",
     "/uploads/screenshot-2026-10-26-at-195853.png"
   ],
   "credits": [
